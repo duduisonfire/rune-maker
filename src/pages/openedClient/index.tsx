@@ -11,6 +11,7 @@ export default function OpenedClient(): JSX.Element {
   const isClosedListener = async () => {
     const closedLoop = setInterval(async () => {
       const isOpened = await isOpen();
+      console.log(isOpened);
 
       if (isOpened !== true) {
         navigate('/closed');
