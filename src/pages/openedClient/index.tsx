@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { isOpen } from '../../libs/isOpen';
 import lolClientApi from '../../libs/lolClientApi';
 import ISummonerData from '../../interfaces/ISummonerData';
+import MatchBox from '../../components/matchBox';
 
 export default function OpenedClient(): JSX.Element {
   const navigate = useNavigate();
@@ -35,10 +36,7 @@ export default function OpenedClient(): JSX.Element {
 
   return (
     <Container>
-      <h1>Cliente Aberto</h1>
-      <h1>{data.displayName}</h1>
-      <h1>{data.summonerId}</h1>
-      <h1>{data.accountId}</h1>
+      <MatchBox />
     </Container>
   );
 }

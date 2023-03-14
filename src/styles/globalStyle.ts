@@ -1,7 +1,7 @@
 import tw from 'tailwind-styled-components';
 
 export const Global = tw.div`
-bg-slate-600
+bg-zinc-800
 p-0
 m-0
 w-full
