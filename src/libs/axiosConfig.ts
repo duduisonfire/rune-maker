@@ -5,7 +5,6 @@ const lockfileData = JSON.parse(localStorage.getItem('lockfileData') as string) 
 
 const lolRequest = axios.create({
   baseURL: `https://127.0.0.1:${lockfileData.port}`,
-  timeout: 1000,
   auth: {
     username: 'riot',
     password: `${lockfileData.password}`,

@@ -3,10 +3,11 @@ import { Container } from './styles/container';
 import { useNavigate } from 'react-router-dom';
 import { isOpen } from '../../libs/isOpen';
 import requestSummonerData from './modules/requestSummonerData';
+import ISummonerData from '../../interfaces/ISummonerData';
 
 export default function OpenedClient(): JSX.Element {
   const navigate = useNavigate();
-  const [data, setData] = useState({ displayName: '', summonerId: '', accountId: '' });
+  const [data, setData] = useState({} as ISummonerData);
 
   useEffect(() => {
     const getSummonerData = async () => {
@@ -25,7 +26,7 @@ export default function OpenedClient(): JSX.Element {
       }, 507);
     };
 
-    if (data.accountId === '') {
+    if (!data.accountId) {
       getSummonerData();
     }
 
