@@ -1,39 +1,43 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container } from './styles/container';
 import { useNavigate } from 'react-router-dom';
 import { isOpen } from '../../libs/isOpen';
-import { Async } from 'react-async';
 import requestSummonerData from './modules/requestSummonerData';
 
 export default function OpenedClient(): JSX.Element {
   const navigate = useNavigate();
+  const [data, setData] = useState({ displayName: '', summonerId: '', accountId: '' });
 
-  const isClosedListener = async () => {
-    const closedLoop = setInterval(async () => {
-      const isOpened = await isOpen();
-      console.log(isOpened);
+  useEffect(() => {
+    const getSummonerData = async () => {
+      const summonerData = await requestSummonerData();
+      setData(summonerData);
+    };
 
-      if (isOpened !== true) {
-        navigate('/closed');
-        clearInterval(closedLoop);
-      }
-    }, 507);
-  };
+    const isClosedListener = async () => {
+      const closedLoop = setInterval(async () => {
+        const isOpened = await isOpen();
+
+        if (isOpened !== true) {
+          navigate('/closed');
+          clearInterval(closedLoop);
+        }
+      }, 507);
+    };
+
+    if (data.accountId === '') {
+      getSummonerData();
+    }
+
+    isClosedListener();
+  }, [data.accountId, navigate]);
 
   return (
-    <Async promiseFn={isClosedListener}>
-      <Async promiseFn={requestSummonerData}>
-        {({ data }) => {
-          return (
-            <Container>
-              <h1>Cliente Aberto</h1>
-              <h1>{data?.data.displayName}</h1>
-              <h1>{data?.data.summonerId}</h1>
-              <h1>{data?.data.accountId}</h1>
-            </Container>
-          );
-        }}
-      </Async>
-    </Async>
+    <Container>
+      <h1>Cliente Aberto</h1>
+      <h1>{data.displayName}</h1>
+      <h1>{data.summonerId}</h1>
+      <h1>{data.accountId}</h1>
+    </Container>
   );
 }
