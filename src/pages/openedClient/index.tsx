@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Container } from './styles/container';
 import { useNavigate } from 'react-router-dom';
 import { isOpen } from '../../libs/isOpen';
-import requestSummonerData from './modules/requestSummonerData';
+import lolClientApi from '../../libs/lolClientApi';
 import ISummonerData from '../../interfaces/ISummonerData';
 
 export default function OpenedClient(): JSX.Element {
@@ -11,7 +11,7 @@ export default function OpenedClient(): JSX.Element {
 
   useEffect(() => {
     const getSummonerData = async () => {
-      const summonerData = await requestSummonerData();
+      const summonerData = await lolClientApi.requestSummonerData();
       setData(summonerData);
     };
 
