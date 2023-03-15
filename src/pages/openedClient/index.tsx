@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container } from './styles/container';
+import { MatchesContainer } from './styles/MatchesContainer';
 import { useNavigate } from 'react-router-dom';
 import { isOpen } from '../../libs/isOpen';
 import lolClientApi from '../../libs/lolClientApi';
@@ -7,7 +7,7 @@ import ISummonerData from '../../interfaces/ISummonerData';
 import MatchBox from '../../components/matchBox';
 import IMatchesData from '../../interfaces/IMatchesData';
 import IGameData from '../../interfaces/IGameData';
-import axios from 'axios';
+import lolExternalApi from '../../libs/lolExternalApi';
 
 export default function OpenedClient(): JSX.Element {
   const [version, setVersion] = useState('');
@@ -16,16 +16,16 @@ export default function OpenedClient(): JSX.Element {
   const [matchData, setMatchData] = useState({} as IMatchesData);
 
   useEffect(() => {
+    const getLolVersion = async () => {
+      const versionResponse = await lolExternalApi.getLolVersion();
+      const version = versionResponse;
+      setVersion(version);
+    };
+
     const getSummonerData = async () => {
       const summonerDataResponse = await lolClientApi.requestSummonerData();
       const summonerData = summonerDataResponse;
       setSummonerData(summonerData);
-    };
-
-    const getLolVersion = async () => {
-      const versionResponse = await axios.get('https://ddragon.leagueoflegends.com/api/versions.json');
-      const version = versionResponse.data as Array<string>;
-      setVersion(version[0]);
     };
 
     const getMatchData = async () => {
@@ -45,6 +45,8 @@ export default function OpenedClient(): JSX.Element {
       }, 507);
     };
 
+    getLolVersion();
+
     if (!summonerData.accountId) {
       getSummonerData();
     }
@@ -53,21 +55,18 @@ export default function OpenedClient(): JSX.Element {
       getMatchData();
     }
 
-    getLolVersion();
     isClosedListener();
   }, [summonerData.accountId, navigate, matchData]);
 
   return (
-    <Container>
+    <MatchesContainer>
       <div>
         <h6 className="text-lg text-white m-2">{summonerData.displayName}</h6>
       </div>
-      {matchData.accountId &&
-        matchData.games.games.map((match: IGameData) => (
-          <div>
-            <MatchBox matchData={match} version={version} />
-          </div>
-        ))}
-    </Container>
+      <div className="h-[90%] overflow-auto">
+        {matchData.accountId &&
+          matchData.games.games.map((match: IGameData) => <MatchBox matchData={match} version={version} />)}
+      </div>
+    </MatchesContainer>
   );
 }

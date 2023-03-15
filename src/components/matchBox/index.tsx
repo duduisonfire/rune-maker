@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import IGameData from '../../interfaces/IGameData';
+import lolExternalApi from '../../libs/lolExternalApi';
 import ItemList from '../itemsList';
-import { MatchBoxContainer } from './styles/matchBoxContainer';
+import { MatchBoxContainer } from './styles/MatchBoxContainer';
 
 export default function MatchBox(props: { matchData: IGameData; version: string }): JSX.Element {
   const version = props.version;
@@ -9,11 +10,25 @@ export default function MatchBox(props: { matchData: IGameData; version: string 
   const matchResult = match.participants[0].stats.win ? 'VICTORY' : 'DEFEAT';
   const resultTextColor = match.participants[0].stats.win ? 'text-green-400' : 'text-red-400';
   const resultBorderColor = match.participants[0].stats.win ? 'border-green-400' : 'border-red-400';
+  const [championName, setChampionName] = useState('');
+
+  useEffect(() => {
+    const getChampionName = async () => {
+      const championNameResponse = await lolExternalApi.getChampionName(
+        match.participants[0].championId.toString(),
+        version,
+      );
+
+      setChampionName(championNameResponse);
+    };
+
+    getChampionName();
+  });
 
   return (
     <MatchBoxContainer className={`${resultBorderColor}`}>
       <img
-        src={`http://ddragon.leagueoflegends.com/cdn/${version}/img/champion/Aatrox.png`}
+        src={`http://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${championName}.png`}
         alt="Champion"
         className="m-2 col-start-1"
         width={150}
