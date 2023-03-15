@@ -5,15 +5,23 @@ import { isOpen } from '../../libs/isOpen';
 import lolClientApi from '../../libs/lolClientApi';
 import ISummonerData from '../../interfaces/ISummonerData';
 import MatchBox from '../../components/matchBox';
+import IMatchesData from '../../interfaces/IMatchesData';
+import IGameData from '../../interfaces/IGameData';
 
 export default function OpenedClient(): JSX.Element {
   const navigate = useNavigate();
-  const [data, setData] = useState({} as ISummonerData);
+  const [summonerData, setSummonerData] = useState({} as ISummonerData);
+  const [matchData, setMatchData] = useState({} as IMatchesData);
 
   useEffect(() => {
     const getSummonerData = async () => {
       const summonerData = await lolClientApi.requestSummonerData();
-      setData(summonerData);
+      setSummonerData(summonerData);
+    };
+
+    const getMatchData = async () => {
+      const matchData = await lolClientApi.requestMatchData();
+      setMatchData(matchData);
     };
 
     const isClosedListener = async () => {
@@ -27,16 +35,28 @@ export default function OpenedClient(): JSX.Element {
       }, 507);
     };
 
-    if (!data.accountId) {
+    if (!summonerData.accountId) {
       getSummonerData();
     }
 
+    if (!matchData.accountId) {
+      getMatchData();
+    }
+
     isClosedListener();
-  }, [data.accountId, navigate]);
+  }, [summonerData.accountId, navigate, matchData]);
 
   return (
     <Container>
-      <MatchBox />
+      <div>
+        <h6 className="text-lg text-white m-2">{summonerData.displayName}</h6>
+      </div>
+      {matchData.accountId &&
+        matchData.games.games.map((match: IGameData) => (
+          <div>
+            <MatchBox matchData={match} />
+          </div>
+        ))}
     </Container>
   );
 }
