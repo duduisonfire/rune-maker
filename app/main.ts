@@ -11,6 +11,10 @@ const createWindow = () => {
     webPreferences: {
       preload: path.join(__dirname, 'preload', 'preload.js'),
     },
+    fullscreen: false,
+    fullscreenable: false,
+    resizable: false,
+    autoHideMenuBar: true,
   });
 
   win.loadFile(path.resolve(__dirname, '..', 'build', 'index.html'));

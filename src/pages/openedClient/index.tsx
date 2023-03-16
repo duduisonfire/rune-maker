@@ -64,8 +64,13 @@ export default function OpenedClient(): JSX.Element {
         <h6 className="text-lg text-white m-2">{summonerData.displayName}</h6>
       </div>
       <div className="h-[90%] overflow-auto scroll-smooth">
-        {matchData.accountId &&
-          matchData.games.games.map((match: IGameData) => <MatchBox matchData={match} version={version} />)}
+        {matchData.accountId && (
+          <div>
+            {matchData.games.games.map((match: IGameData) => (
+              <MatchBox matchData={match} version={version} />
+            ))}
+          </div>
+        )}
       </div>
     </MatchesContainer>
   );
