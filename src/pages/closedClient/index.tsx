@@ -4,6 +4,7 @@ import { Async } from 'react-async';
 import { isOpen } from '../../libs/isOpen';
 import { useNavigate } from 'react-router-dom';
 import ILockfileData from '../../interfaces/ILockfileData';
+import lolRequest from '../../libs/axiosConfig';
 
 export default function ClosedClient(): JSX.Element {
   const navigate = useNavigate();
@@ -20,16 +21,22 @@ export default function ClosedClient(): JSX.Element {
         //@ts-ignore
         const lockfileData = (await window.lockfile.requestData()) as ILockfileData;
         localStorage.setItem('lockfileData', JSON.stringify(lockfileData));
-        navigate('/open');
-        clearInterval(openLoop);
+
+        const handshakeRequest = await lolRequest.get('/lol-login/v1/session');
+        const clientIsTrulyOpened = handshakeRequest.status;
+
+        if (clientIsTrulyOpened === 200) {
+          clearInterval(openLoop);
+          navigate('/open');
+        }
       }
-    }, 507);
+    }, 1000);
   };
 
   return (
     <Async promiseFn={isOpenListener}>
       <Container>
-        <h1>Cliente Fechado</h1>
+        <h1 className="text-white">Cliente Fechado</h1>
       </Container>
     </Async>
   );
