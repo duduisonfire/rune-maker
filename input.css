@@ -1,24 +1,17 @@
 @tailwind base;
 
-* {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(112, 25, 112, 0.486);
-}
-
-/* Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
 }
 
 *::-webkit-scrollbar-track {
-  background: rgba(128, 128, 128, 0.438);
+  background: rgba(128, 128, 128, 0.144);
   border-radius: 10px;
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: rgba(128, 128, 128, 0.438);
+  background-color: rgba(150, 150, 150, 0.747);
   border-radius: 20px;
-  border: 2px solid rgba(112, 25, 112, 0.486);
 }
 
 @tailwind components;
