@@ -53,7 +53,7 @@ export default function OpenedClient(): JSX.Element {
           clearInterval(closedLoop);
           navigate('/closed');
         }
-      }, 207);
+      }, 307);
     };
 
     getLolVersion();
