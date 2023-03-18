@@ -1,4 +1,4 @@
-export default interface IRunePage {
+export default interface IGetRunePage {
   autoModifiedSelections: [];
   current: boolean;
   id: number;

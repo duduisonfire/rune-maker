@@ -30,7 +30,7 @@ class lolRequest {
     return responseResult;
   }
 
-  static async create(url: string, body: unknown) {
+  static async post(url: string, body: unknown) {
     const lockfileData = JSON.parse(localStorage.getItem('lockfileData') as string) as ILockfileData;
 
     const responseResult = axios.post(url, body, {
