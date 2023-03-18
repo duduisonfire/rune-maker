@@ -43,7 +43,7 @@ export default function OpenedClient(): JSX.Element {
           clearInterval(inMatchLoop);
           navigate('/inmatch');
         }
-      }, 307);
+      }, 650);
 
       const closedLoop = window.setInterval(async () => {
         const isOpened = await isOpen();
