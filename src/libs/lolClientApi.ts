@@ -11,7 +11,7 @@ export default abstract class lolClientApi {
     return responseData;
   }
 
-  static async requestMatchData() {
+  static async requestMatchesData() {
     const response = await lolRequest.get('/lol-match-history/v1/products/lol/current-summoner/matches');
     const responseData = response.data as IMatchData;
     return responseData;
@@ -23,8 +23,12 @@ export default abstract class lolClientApi {
       const responseData = response.data as IGetRunePage;
       return responseData;
     } catch (error) {
-      return;
+      return error;
     }
+  }
+
+  static async deleteCurrentRunePage(id: string) {
+    await lolRequest.delete(`/lol-perks/v1/pages/${id}/`);
   }
 
   static async createCurrentRunePage(body: ICreateRunePage) {
@@ -33,6 +37,16 @@ export default abstract class lolClientApi {
       return true;
     } catch (error) {
       return false;
+    }
+  }
+
+  static async getCurrentMatch(): Promise<IGetRunePage | void> {
+    try {
+      const response = await lolRequest.get('/lol-champ-select/v1/session/');
+      const responseData = response.data as IGetRunePage;
+      return responseData;
+    } catch (error) {
+      return;
     }
   }
 }

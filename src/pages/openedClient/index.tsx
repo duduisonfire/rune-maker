@@ -13,7 +13,7 @@ export default function OpenedClient(): JSX.Element {
   const [version, setVersion] = useState('');
   const navigate = useNavigate();
   const [summonerData, setSummonerData] = useState({} as ISummonerData);
-  const [matchData, setMatchData] = useState({} as IMatchesData);
+  const [matchesData, setMatchesData] = useState({} as IMatchesData);
 
   useEffect(() => {
     const getLolVersion = async () => {
@@ -28,21 +28,32 @@ export default function OpenedClient(): JSX.Element {
       setSummonerData(summonerData);
     };
 
-    const getMatchData = async () => {
-      const matchDataResponse = await lolClientApi.requestMatchData();
+    const getMatchesData = async () => {
+      const matchDataResponse = await lolClientApi.requestMatchesData();
       const matchData = matchDataResponse;
-      setMatchData(matchData);
+      setMatchesData(matchData);
     };
 
-    const isClosedListener = async () => {
-      const closedLoop = setInterval(async () => {
+    const pageListener = async () => {
+      const inMatchLoop = window.setInterval(async () => {
+        const matchResponse = await lolClientApi.getCurrentMatch();
+
+        if (matchResponse !== undefined) {
+          clearInterval(closedLoop);
+          clearInterval(inMatchLoop);
+          navigate('/inmatch');
+        }
+      }, 307);
+
+      const closedLoop = window.setInterval(async () => {
         const isOpened = await isOpen();
 
         if (isOpened !== true) {
-          navigate('/closed');
+          clearInterval(inMatchLoop);
           clearInterval(closedLoop);
+          navigate('/closed');
         }
-      }, 507);
+      }, 207);
     };
 
     getLolVersion();
@@ -51,12 +62,12 @@ export default function OpenedClient(): JSX.Element {
       getSummonerData();
     }
 
-    if (!matchData.accountId) {
-      getMatchData();
+    if (!matchesData.accountId) {
+      getMatchesData();
     }
 
-    isClosedListener();
-  }, [summonerData.accountId, navigate, matchData]);
+    pageListener();
+  }, [summonerData.accountId, navigate, matchesData]);
 
   return (
     <MatchesContainer>
@@ -64,9 +75,9 @@ export default function OpenedClient(): JSX.Element {
         <h6 className="text-lg text-white m-2">{summonerData.displayName}</h6>
       </div>
       <div className="h-[90%] overflow-auto scroll-smooth">
-        {matchData.accountId && (
+        {matchesData.accountId && (
           <div>
-            {matchData.games.games.map((match: IGameData) => (
+            {matchesData.games.games.map((match: IGameData) => (
               <MatchBox matchData={match} version={version} />
             ))}
           </div>
