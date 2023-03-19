@@ -10,7 +10,7 @@ export default function ClosedClient(): JSX.Element {
   const navigate = useNavigate();
 
   const isOpenListener = async () => {
-    const openLoop = setInterval(async () => {
+    const openLoop = window.setInterval(async () => {
       const isOpened = await isOpen();
 
       if (isOpened) {
@@ -26,8 +26,11 @@ export default function ClosedClient(): JSX.Element {
         const clientIsTrulyOpened = handshakeRequest.status;
 
         if (clientIsTrulyOpened === 200) {
-          clearInterval(openLoop);
-          navigate('/open');
+          window.clearInterval(openLoop);
+
+          window.setTimeout(() => {
+            navigate('/open');
+          }, 1000);
         }
       }
     }, 1000);

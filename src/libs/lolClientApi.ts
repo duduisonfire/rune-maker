@@ -40,13 +40,9 @@ export default abstract class lolClientApi {
     }
   }
 
-  static async getCurrentMatch(): Promise<IGetRunePage | void> {
-    try {
-      const response = await lolRequest.get('/lol-champ-select/v1/session/');
-      const responseData = response.data as IGetRunePage;
-      return responseData;
-    } catch (error) {
-      return;
-    }
+  static async inMatch() {
+    const response = await lolRequest.get('/lol-champ-select/v1/session/');
+
+    return response.status === 200;
   }
 }

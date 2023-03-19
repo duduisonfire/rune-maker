@@ -17,7 +17,7 @@ export default function AllRoutes(): JSX.Element {
         <Route path="/closed" element={<ClosedClient />} />
       </Route>
       <Route path="/open" element={<OpenedClient />} />
-      <Route path="/inmatch" element={<InMatch />} />
+      <Route path="/inmatch/" element={<InMatch />} />
     </Routes>
   );
 }

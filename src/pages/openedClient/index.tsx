@@ -34,26 +34,34 @@ export default function OpenedClient(): JSX.Element {
       setMatchesData(matchData);
     };
 
-    const pageListener = async () => {
-      const inMatchLoop = window.setInterval(async () => {
-        const matchResponse = await lolClientApi.getCurrentMatch();
-
-        if (matchResponse !== undefined) {
-          clearInterval(closedLoop);
-          clearInterval(inMatchLoop);
-          navigate('/inmatch');
-        }
-      }, 650);
-
+    const PageListener = async () => {
       const closedLoop = window.setInterval(async () => {
         const isOpened = await isOpen();
+        let inMatch = false;
+
+        if (isOpened === true) {
+          inMatch = await lolClientApi.inMatch();
+        }
+
+        if (inMatch) {
+          window.clearInterval(closedLoop);
+          navigate(`/inmatch/`);
+        }
 
         if (isOpened !== true) {
-          clearInterval(inMatchLoop);
-          clearInterval(closedLoop);
+          window.clearInterval(closedLoop);
           navigate('/closed');
         }
       }, 307);
+
+      const summonerName = document.querySelector('#summoner-name');
+      const matchesBox = document.querySelector('#matches-content');
+      console.log(summonerName, matchesBox);
+
+      if (matchesBox?.innerHTML === null || summonerName?.innerHTML === null) {
+        window.clearInterval(closedLoop);
+        setVersion(version);
+      }
     };
 
     getLolVersion();
@@ -66,15 +74,17 @@ export default function OpenedClient(): JSX.Element {
       getMatchesData();
     }
 
-    pageListener();
-  }, [summonerData.accountId, navigate, matchesData]);
+    PageListener();
+  }, [summonerData.accountId, navigate, matchesData, version]);
 
   return (
     <MatchesContainer>
       <div>
-        <h6 className="text-lg text-white m-2">{summonerData.displayName}</h6>
+        <h6 id="summoner-name" className="text-lg text-white m-2">
+          {summonerData.displayName}
+        </h6>
       </div>
-      <div className="h-[90%] overflow-auto scroll-smooth">
+      <div id="matches-content" className="h-[90%] overflow-auto scroll-smooth">
         {matchesData.accountId && (
           <div>
             {matchesData.games.games.map((match: IGameData) => (
