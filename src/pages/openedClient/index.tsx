@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { MatchesContainer } from './styles/MatchesContainer';
 import { useNavigate } from 'react-router-dom';
-import { isOpen } from '../../libs/isOpen';
 import lolClientApi from '../../libs/lolClientApi';
 import ISummonerData from '../../interfaces/ISummonerData';
 import MatchBox from '../../components/matchBox';
@@ -20,7 +19,7 @@ export default function OpenedClient(): JSX.Element {
     const res1 = useQuery({
       queryKey: ['isClosed'],
       queryFn: async () => {
-        const res = await isOpen();
+        const res = lolClientApi.requestSummonerData();
         return res;
       },
       refetchInterval: 500,
@@ -36,7 +35,7 @@ export default function OpenedClient(): JSX.Element {
     return [res1, res2];
   };
 
-  const [{ data: isClosed }, { status }] = QueryMultiple();
+  const [{ status: toClose }, { status: toMatch }] = QueryMultiple();
 
   useEffect(() => {
     const getLolVersion = async () => {
@@ -60,19 +59,26 @@ export default function OpenedClient(): JSX.Element {
     getLolVersion();
     getSummonerData();
     getMatchesData();
+
+    const summonerNameElement = document.querySelector('#summoner-name');
+    const matchesElement = document.querySelector('#matches-content');
+
+    if (summonerNameElement?.innerHTML === '' || matchesElement?.innerHTML === '') {
+      getLolVersion();
+    }
   }, [matchesData.accountId, summonerData.accountId]);
 
   useEffect(() => {
-    if (!isClosed) {
+    if (toClose === 'error') {
       navigate('/closed');
     }
-  }, [isClosed, navigate]);
+  }, [navigate, toClose]);
 
   useEffect(() => {
-    if (status === 'success') {
+    if (toMatch === 'success') {
       navigate('/inmatch');
     }
-  }, [navigate, status]);
+  }, [navigate, toMatch]);
 
   return (
     <MatchesContainer>

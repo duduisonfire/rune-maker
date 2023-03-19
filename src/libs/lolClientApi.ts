@@ -45,4 +45,10 @@ export default abstract class lolClientApi {
 
     return response;
   }
+
+  static async currentChampion() {
+    const response = await lolRequest.get('/lol-champ-select/v1/current-champion/');
+
+    return response;
+  }
 }

@@ -1,19 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container } from './styles/container';
-import { Async } from 'react-async';
 import { isOpen } from '../../libs/isOpen';
 import { useNavigate } from 'react-router-dom';
 import ILockfileData from '../../interfaces/ILockfileData';
 import lolRequest from '../../libs/axiosConfig';
+import { useQuery } from 'react-query';
 
 export default function ClosedClient(): JSX.Element {
   const navigate = useNavigate();
 
-  const isOpenListener = async () => {
-    const openLoop = window.setInterval(async () => {
-      const isOpened = await isOpen();
+  const { data } = useQuery({
+    queryKey: ['isClosed'],
+    queryFn: async () => {
+      const res = await isOpen();
+      return res;
+    },
+    refetchInterval: 500,
+  });
 
-      if (isOpened) {
+  useEffect(() => {
+    const isOpenListener = async () => {
+      if (data) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         //@ts-ignore
         window.lockfile.watch();
@@ -26,21 +33,19 @@ export default function ClosedClient(): JSX.Element {
         const clientIsTrulyOpened = handshakeRequest.status;
 
         if (clientIsTrulyOpened === 200) {
-          window.clearInterval(openLoop);
-
           window.setTimeout(() => {
             navigate('/open');
           }, 1000);
         }
       }
-    }, 1000);
-  };
+    };
+
+    isOpenListener();
+  });
 
   return (
-    <Async promiseFn={isOpenListener}>
-      <Container>
-        <h1 className="text-white">Cliente Fechado</h1>
-      </Container>
-    </Async>
+    <Container>
+      <h1 className="text-white">Cliente Fechado</h1>
+    </Container>
   );
 }
