@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { MatchesContainer } from './styles/MatchesContainer';
 import { useNavigate } from 'react-router-dom';
 import { isOpen } from '../../libs/isOpen';
@@ -8,12 +8,35 @@ import MatchBox from '../../components/matchBox';
 import IMatchesData from '../../interfaces/IMatchesData';
 import IGameData from '../../interfaces/IGameData';
 import lolExternalApi from '../../libs/lolExternalApi';
+import { useQuery } from 'react-query';
 
 export default function OpenedClient(): JSX.Element {
-  const [version, setVersion] = useState('');
   const navigate = useNavigate();
+  const [version, setVersion] = useState('');
   const [summonerData, setSummonerData] = useState({} as ISummonerData);
   const [matchesData, setMatchesData] = useState({} as IMatchesData);
+
+  const QueryMultiple = () => {
+    const res1 = useQuery({
+      queryKey: ['isClosed'],
+      queryFn: async () => {
+        const res = await isOpen();
+        return res;
+      },
+      refetchInterval: 500,
+    });
+    const res2 = useQuery({
+      queryKey: ['inMatch'],
+      queryFn: async () => {
+        const res = await lolClientApi.inMatch();
+        return res.data;
+      },
+      refetchInterval: 500,
+    });
+    return [res1, res2];
+  };
+
+  const [{ data: isClosed }, { status }] = QueryMultiple();
 
   useEffect(() => {
     const getLolVersion = async () => {
@@ -34,48 +57,22 @@ export default function OpenedClient(): JSX.Element {
       setMatchesData(matchData);
     };
 
-    const PageListener = async () => {
-      const closedLoop = window.setInterval(async () => {
-        const isOpened = await isOpen();
-        let inMatch = false;
-
-        if (isOpened === true) {
-          inMatch = await lolClientApi.inMatch();
-        }
-
-        if (inMatch) {
-          window.clearInterval(closedLoop);
-          navigate(`/inmatch/`);
-        }
-
-        if (isOpened !== true) {
-          window.clearInterval(closedLoop);
-          navigate('/closed');
-        }
-      }, 307);
-
-      const summonerName = document.querySelector('#summoner-name');
-      const matchesBox = document.querySelector('#matches-content');
-      console.log(summonerName, matchesBox);
-
-      if (matchesBox?.innerHTML === null || summonerName?.innerHTML === null) {
-        window.clearInterval(closedLoop);
-        setVersion(version);
-      }
-    };
-
     getLolVersion();
+    getSummonerData();
+    getMatchesData();
+  }, [matchesData.accountId, summonerData.accountId]);
 
-    if (!summonerData.accountId) {
-      getSummonerData();
+  useEffect(() => {
+    if (!isClosed) {
+      navigate('/closed');
     }
+  }, [isClosed, navigate]);
 
-    if (!matchesData.accountId) {
-      getMatchesData();
+  useEffect(() => {
+    if (status === 'success') {
+      navigate('/inmatch');
     }
-
-    PageListener();
-  }, [summonerData.accountId, navigate, matchesData, version]);
+  }, [navigate, status]);
 
   return (
     <MatchesContainer>

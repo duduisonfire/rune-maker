@@ -43,6 +43,6 @@ export default abstract class lolClientApi {
   static async inMatch() {
     const response = await lolRequest.get('/lol-champ-select/v1/session/');
 
-    return response.status === 200;
+    return response;
   }
 }

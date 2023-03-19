@@ -1,32 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import RuneRequest from '../../classes/runesWebScraper';
-import { isOpen } from '../../libs/isOpen';
 import lolClientApi from '../../libs/lolClientApi';
 import { Container } from './styles/container';
 
 export default function InMatch(): JSX.Element {
   const navigate = useNavigate();
+  const { status, data, error, isFetching } = useQuery({
+    queryKey: ['inMatchPage'],
+    queryFn: async () => {
+      const res = await lolClientApi.inMatch();
+      return res.data;
+    },
+    refetchInterval: 500,
+  });
 
   useEffect(() => {
-    const getMatch = async () => {
-      const matchLoop = window.setInterval(async () => {
-        if (await isOpen()) {
-          const matchResponse = await lolClientApi.inMatch();
-
-          if (!matchResponse) {
-            window.clearInterval(matchLoop);
-            navigate('/closed');
-          }
-        } else {
-          window.clearInterval(matchLoop);
-          navigate('/closed');
-        }
-      }, 650);
-    };
-
-    //const RuneRequest = new RuneRequest();
-    getMatch();
+    if (status === 'error') {
+      navigate('/closed');
+    }
   });
 
   return (
