@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MatchesContainer } from './styles/MatchesContainer';
 import { useNavigate } from 'react-router-dom';
 import { isOpen } from '../../libs/isOpen';
