@@ -1,4 +1,4 @@
-# Runa Maker
+# Rune Maker
 An another League of Legends assistant.
 
 # Features
