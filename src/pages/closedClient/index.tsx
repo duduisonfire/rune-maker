@@ -2,9 +2,8 @@ import React, { useEffect } from 'react';
 import { Container } from './styles/container';
 import { isOpen } from '../../libs/isOpen';
 import { useNavigate } from 'react-router-dom';
-import ILockfileData from '../../interfaces/ILockfileData';
-import lolRequest from '../../libs/axiosConfig';
 import { useQuery } from 'react-query';
+import createAxios from '../../libs/AxiosConfig';
 
 export default function ClosedClient(): JSX.Element {
   const navigate = useNavigate();
@@ -29,7 +28,7 @@ export default function ClosedClient(): JSX.Element {
         const lockfileData = (await window.lockfile.requestData()) as ILockfileData;
         localStorage.setItem('lockfileData', JSON.stringify(lockfileData));
 
-        const handshakeRequest = await lolRequest.get('/lol-login/v1/session');
+        const handshakeRequest = await createAxios().get('/lol-login/v1/session');
         const clientIsTrulyOpened = handshakeRequest.status;
 
         if (clientIsTrulyOpened === 200) {

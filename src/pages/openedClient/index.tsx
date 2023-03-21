@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { MatchesContainer } from './styles/MatchesContainer';
 import { useNavigate } from 'react-router-dom';
-import lolClientApi from '../../libs/lolClientApi';
+import LeagueOfLegendsClientApi from '../../libs/LeagueOfLegendsClientApi';
 import ISummonerData from '../../interfaces/ISummonerData';
 import MatchBox from '../../components/matchBox';
 import IMatchesData from '../../interfaces/IMatchesData';
@@ -14,12 +14,13 @@ export default function OpenedClient(): JSX.Element {
   const [version, setVersion] = useState('');
   const [summonerData, setSummonerData] = useState({} as ISummonerData);
   const [matchesData, setMatchesData] = useState({} as IMatchesData);
+  const axios = useMemo(() => LeagueOfLegendsClientApi.create(), []);
 
   const QueryMultiple = () => {
     const res1 = useQuery({
       queryKey: ['isClosed'],
       queryFn: async () => {
-        const res = lolClientApi.requestSummonerData();
+        const res = await axios.requestSummonerData();
         return res;
       },
       refetchInterval: 500,
@@ -27,7 +28,7 @@ export default function OpenedClient(): JSX.Element {
     const res2 = useQuery({
       queryKey: ['inMatch'],
       queryFn: async () => {
-        const res = await lolClientApi.inMatch();
+        const res = await axios.inMatch();
         return res.data;
       },
       refetchInterval: 500,
@@ -45,13 +46,13 @@ export default function OpenedClient(): JSX.Element {
     };
 
     const getSummonerData = async () => {
-      const summonerDataResponse = await lolClientApi.requestSummonerData();
+      const summonerDataResponse = await axios.requestSummonerData();
       const summonerData = summonerDataResponse;
       setSummonerData(summonerData);
     };
 
     const getMatchesData = async () => {
-      const matchDataResponse = await lolClientApi.requestMatchesData();
+      const matchDataResponse = await axios.requestMatchesData();
       const matchData = matchDataResponse;
       setMatchesData(matchData);
     };
@@ -66,7 +67,7 @@ export default function OpenedClient(): JSX.Element {
     if (summonerNameElement?.innerHTML === '' || matchesElement?.innerHTML === '') {
       getLolVersion();
     }
-  }, [matchesData.accountId, summonerData.accountId]);
+  }, [axios, matchesData.accountId, summonerData.accountId]);
 
   useEffect(() => {
     if (toClose === 'error') {
