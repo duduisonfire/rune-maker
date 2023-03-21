@@ -1,31 +1,27 @@
 import React, { useEffect } from 'react';
 import { Container } from './styles/container';
-import { isOpen } from '../../libs/isOpen';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import createAxiosInstance from '../../libs/AxiosConfig';
+import ElectronApi from '../../libs/ElectronApi';
 
 export default function ClosedClient(): JSX.Element {
   const navigate = useNavigate();
+  const electron = new ElectronApi();
 
   const { data } = useQuery({
     queryKey: ['isClosed'],
     queryFn: async () => {
-      const res = await isOpen();
+      const res = await electron.clientIsOpen();
       return res;
     },
     refetchInterval: 500,
   });
 
   useEffect(() => {
-    const isOpenListener = async () => {
+    const clientIsOpenListener = async () => {
       if (data) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-ignore
-        window.lockfile.watch();
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-ignore
-        const lockfileData = (await window.lockfile.requestData()) as ILockfileData;
+        const lockfileData = await electron.getLockfileContent();
         localStorage.setItem('lockfileData', JSON.stringify(lockfileData));
 
         const handshakeRequest = await createAxiosInstance().get('/lol-login/v1/session');
@@ -39,7 +35,7 @@ export default function ClosedClient(): JSX.Element {
       }
     };
 
-    isOpenListener();
+    clientIsOpenListener();
   });
 
   return (

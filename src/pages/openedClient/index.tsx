@@ -6,7 +6,7 @@ import ISummonerData from '../../interfaces/ISummonerData';
 import MatchBox from '../../components/matchBox';
 import IMatchesData from '../../interfaces/IMatchesData';
 import IGameData from '../../interfaces/IGameData';
-import lolExternalApi from '../../libs/lolExternalApi';
+import LeagueOfLegendsExternalApi from '../../libs/LeagueOfLegendsExternalApi';
 import { useQuery } from 'react-query';
 
 export default function OpenedClient(): JSX.Element {
@@ -40,7 +40,7 @@ export default function OpenedClient(): JSX.Element {
 
   useEffect(() => {
     const getLolVersion = async () => {
-      const versionResponse = await lolExternalApi.getLolVersion();
+      const versionResponse = await LeagueOfLegendsExternalApi.getLolVersion();
       const version = versionResponse;
       setVersion(version);
     };

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import RuneRequest from '../../classes/runesWebScraper';
 import IChampionSelectRequest from '../../interfaces/IChampionSelectRequest';
 import LeagueOfLegendsClientApi from '../../libs/LeagueOfLegendsClientApi';
-import lolExternalApi from '../../libs/lolExternalApi';
+import LeagueOfLegendsExternalApi from '../../libs/LeagueOfLegendsExternalApi';
 import { Container } from './styles/container';
 
 export default function InMatch(): JSX.Element {
@@ -43,7 +43,7 @@ export default function InMatch(): JSX.Element {
 
   useEffect(() => {
     const getLolVersion = async () => {
-      const lolVersion = await lolExternalApi.getLolVersion();
+      const lolVersion = await LeagueOfLegendsExternalApi.getLolVersion();
       setLolVersion(lolVersion);
     };
 
@@ -53,7 +53,7 @@ export default function InMatch(): JSX.Element {
   useEffect(() => {
     const championSelect = match?.data as IChampionSelectRequest;
     const getChampionName = async () => {
-      const champion = await lolExternalApi.getChampionName(
+      const champion = await LeagueOfLegendsExternalApi.getChampionName(
         championSelect.actions[0][0].championId.toString(),
         lolVersion,
       );

@@ -2,7 +2,7 @@ import React from 'react';
 import IPLayerPosGameStats from '../../interfaces/IPlayerPosGameStats';
 
 export default function ItemList(props: { version: string; player: IPLayerPosGameStats }): JSX.Element {
-  const version = props.version as string;
+  const version = props.version;
   const player = props.player;
   const item: string[] = [];
 

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export default abstract class lolExternalApi {
+export default abstract class LeagueOfLegendsExternalApi {
   static async getLolVersion() {
     const response = await axios.get('https://ddragon.leagueoflegends.com/api/versions.json');
     const responseData = response.data as Array<string>;

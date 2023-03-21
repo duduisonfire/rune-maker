@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import IPLayerPosGameStats from '../../interfaces/IPlayerPosGameStats';
-import lolExternalApi from '../../libs/lolExternalApi';
+import LeagueOfLegendsExternalApi from '../../libs/LeagueOfLegendsExternalApi';
 import ItemList from '../itemsList';
 import { MatchBoxContainer } from './styles/MatchBoxContainer';
 
@@ -14,7 +14,10 @@ export default function MatchBox(props: { version: string; player: IPLayerPosGam
 
   useEffect(() => {
     const getChampionName = async () => {
-      const championNameResponse = await lolExternalApi.getChampionName(player.championId.toString(), version);
+      const championNameResponse = await LeagueOfLegendsExternalApi.getChampionName(
+        player.championId.toString(),
+        version,
+      );
 
       setChampionName(championNameResponse);
     };

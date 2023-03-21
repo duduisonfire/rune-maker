@@ -1,20 +1,19 @@
 import React, { MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ElectronApi from '../../libs/ElectronApi';
 
 export default function SelectFolder(): JSX.Element {
   const navigate = useNavigate();
+  const electron = new ElectronApi();
 
-  function getDir(e: MouseEvent) {
+  async function getDir(e: MouseEvent) {
     const file = document.getElementById('file-input') as HTMLElement;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
-    localStorage.setItem('Lockfile', file.files[0].path.replaceAll('LeagueClient.exe', 'lockfile'));
+    electron.getLeagueOfLegendsPath(file);
 
     if (localStorage.getItem('Lockfile') !== '' && localStorage.getItem('Lockfile') !== null) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      //@ts-ignore
-      window.lockfile.setFile(localStorage.getItem('Lockfile'));
-      console.log(localStorage.getItem('Lockfile'));
+      electron.setLeagueOfLegendsPath();
+      const lockfileData = await electron.getLockfileContent();
+      localStorage.setItem('lockfileData', JSON.stringify(lockfileData));
       navigate('/closed');
     }
   }
