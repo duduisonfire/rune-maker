@@ -92,7 +92,7 @@ export default function OpenedClient(): JSX.Element {
         {matchesData.accountId && (
           <div>
             {matchesData.games.games.map((match: IGameData) => (
-              <MatchBox matchData={match} version={version} />
+              <MatchBox version={version} player={match.participants[0]} />
             ))}
           </div>
         )}
