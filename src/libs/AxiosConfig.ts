@@ -1,7 +1,7 @@
 import axios from 'axios';
 import ILockfileData from '../interfaces/LockfileData';
 
-export default function createAxios() {
+export default function createAxiosInstance() {
   const lockfile = JSON.parse(localStorage.getItem('lockfileData') as string) as ILockfileData;
 
   return axios.create({

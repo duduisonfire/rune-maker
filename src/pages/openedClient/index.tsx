@@ -14,13 +14,13 @@ export default function OpenedClient(): JSX.Element {
   const [version, setVersion] = useState('');
   const [summonerData, setSummonerData] = useState({} as ISummonerData);
   const [matchesData, setMatchesData] = useState({} as IMatchesData);
-  const axios = useMemo(() => LeagueOfLegendsClientApi.create(), []);
+  const lolClientApi = useMemo(() => LeagueOfLegendsClientApi.create(), []);
 
   const QueryMultiple = () => {
     const res1 = useQuery({
       queryKey: ['isClosed'],
       queryFn: async () => {
-        const res = await axios.requestSummonerData();
+        const res = await lolClientApi.requestSummonerData();
         return res;
       },
       refetchInterval: 500,
@@ -28,7 +28,7 @@ export default function OpenedClient(): JSX.Element {
     const res2 = useQuery({
       queryKey: ['inMatch'],
       queryFn: async () => {
-        const res = await axios.inMatch();
+        const res = await lolClientApi.inMatch();
         return res.data;
       },
       refetchInterval: 500,
@@ -46,13 +46,13 @@ export default function OpenedClient(): JSX.Element {
     };
 
     const getSummonerData = async () => {
-      const summonerDataResponse = await axios.requestSummonerData();
+      const summonerDataResponse = await lolClientApi.requestSummonerData();
       const summonerData = summonerDataResponse;
       setSummonerData(summonerData);
     };
 
     const getMatchesData = async () => {
-      const matchDataResponse = await axios.requestMatchesData();
+      const matchDataResponse = await lolClientApi.requestMatchesData();
       const matchData = matchDataResponse;
       setMatchesData(matchData);
     };
@@ -67,7 +67,7 @@ export default function OpenedClient(): JSX.Element {
     if (summonerNameElement?.innerHTML === '' || matchesElement?.innerHTML === '') {
       getLolVersion();
     }
-  }, [axios, matchesData.accountId, summonerData.accountId]);
+  }, [lolClientApi, matchesData.accountId, summonerData.accountId]);
 
   useEffect(() => {
     if (toClose === 'error') {

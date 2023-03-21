@@ -3,13 +3,13 @@ import ISummonerData from '../interfaces/ISummonerData';
 import IGetRunePage from '../interfaces/IGetRunePage';
 import ICreateRunePage from '../interfaces/ICreateRunePage';
 import { AxiosInstance } from 'axios';
-import createAxios from './AxiosConfig';
+import createAxiosInstance from './AxiosConfig';
 
 class LeagueOfLegendsClientApi {
   constructor(private axios: AxiosInstance) {}
 
   static create() {
-    return new LeagueOfLegendsClientApi(createAxios());
+    return new LeagueOfLegendsClientApi(createAxiosInstance());
   }
 
   async requestSummonerData() {

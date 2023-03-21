@@ -11,13 +11,13 @@ export default function InMatch(): JSX.Element {
   const navigate = useNavigate();
   const [champion, setChampion] = useState('Choose champion');
   const [lolVersion, setLolVersion] = useState('');
-  const axios = new LeagueOfLegendsClientApi(JSON.parse(localStorage.getItem('lockfileData') as string));
+  const lolClientApi = LeagueOfLegendsClientApi.create();
 
   const QueryMultiple = () => {
     const res1 = useQuery({
       queryKey: ['isClosed'],
       queryFn: async () => {
-        const res = await axios.inMatch();
+        const res = await lolClientApi.inMatch();
         return res;
       },
       refetchInterval: 500,
@@ -25,7 +25,7 @@ export default function InMatch(): JSX.Element {
     const res2 = useQuery({
       queryKey: ['inMatch'],
       queryFn: async () => {
-        const res = await axios.inMatch();
+        const res = await lolClientApi.inMatch();
         return res;
       },
       refetchInterval: 300,
