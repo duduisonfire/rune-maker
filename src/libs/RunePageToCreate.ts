@@ -1,6 +1,6 @@
 import ICreateRunePage from '../interfaces/ICreateRunePage';
 import runesParseTable from './runesParseTable';
-import RuneWebScrap from './runesWebScrap';
+import RuneWebScrap from './RunesWebScrap';
 
 export default class RunePageToCreate implements ICreateRunePage {
   name: string;
