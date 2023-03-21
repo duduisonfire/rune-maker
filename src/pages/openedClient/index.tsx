@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { createRef, RefObject, useEffect, useMemo, useState } from 'react';
 import { MatchesContainer } from './styles/MatchesContainer';
 import { useNavigate } from 'react-router-dom';
 import LeagueOfLegendsClientApi from '../../libs/LeagueOfLegendsClientApi';
@@ -15,6 +15,8 @@ export default function OpenedClient(): JSX.Element {
   const [summonerData, setSummonerData] = useState({} as ISummonerData);
   const [matchesData, setMatchesData] = useState({} as IMatchesData);
   const lolClientApi = useMemo(() => LeagueOfLegendsClientApi.create(), []);
+  const summonerNameElement: RefObject<HTMLDivElement> = createRef();
+  const matchesElement: RefObject<HTMLDivElement> = createRef();
 
   const QueryMultiple = () => {
     const res1 = useQuery({
@@ -28,7 +30,7 @@ export default function OpenedClient(): JSX.Element {
     const res2 = useQuery({
       queryKey: ['inMatch'],
       queryFn: async () => {
-        const res = await lolClientApi.inMatch();
+        const res = await lolClientApi.inChampionSelect();
         return res.data;
       },
       refetchInterval: 500,
@@ -61,13 +63,10 @@ export default function OpenedClient(): JSX.Element {
     getSummonerData();
     getMatchesData();
 
-    const summonerNameElement = document.querySelector('#summoner-name');
-    const matchesElement = document.querySelector('#matches-content');
-
-    if (summonerNameElement?.innerHTML === '' || matchesElement?.innerHTML === '') {
+    if (summonerNameElement.current?.innerHTML === '' || matchesElement.current?.innerHTML === '') {
       getLolVersion();
     }
-  }, [lolClientApi, matchesData.accountId, summonerData.accountId]);
+  }, [lolClientApi, matchesElement, summonerNameElement]);
 
   useEffect(() => {
     if (toClose === 'error') {
@@ -84,11 +83,11 @@ export default function OpenedClient(): JSX.Element {
   return (
     <MatchesContainer>
       <div>
-        <h6 id="summoner-name" className="text-lg text-white m-2">
+        <h6 ref={summonerNameElement} className="text-lg text-white m-2">
           {summonerData.displayName}
         </h6>
       </div>
-      <div id="matches-content" className="h-[90%] overflow-auto scroll-smooth">
+      <div ref={matchesElement} className="h-[90%] overflow-auto scroll-smooth">
         {matchesData.accountId && (
           <div>
             {matchesData.games.games.map((match: IGameData) => (

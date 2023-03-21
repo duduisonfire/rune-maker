@@ -17,7 +17,7 @@ export default function InMatch(): JSX.Element {
     const res1 = useQuery({
       queryKey: ['isClosed'],
       queryFn: async () => {
-        const res = await lolClientApi.inMatch();
+        const res = await lolClientApi.inChampionSelect();
         return res;
       },
       refetchInterval: 500,
@@ -25,7 +25,7 @@ export default function InMatch(): JSX.Element {
     const res2 = useQuery({
       queryKey: ['inMatch'],
       queryFn: async () => {
-        const res = await lolClientApi.inMatch();
+        const res = await lolClientApi.inChampionSelect();
         return res;
       },
       refetchInterval: 300,

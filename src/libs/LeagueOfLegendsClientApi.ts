@@ -47,7 +47,7 @@ class LeagueOfLegendsClientApi {
     }
   }
 
-  async inMatch() {
+  async inChampionSelect() {
     const response = await this.axios.get('/lol-champ-select/v1/session/');
 
     return response;
