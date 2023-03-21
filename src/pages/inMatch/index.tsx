@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import RuneRequest from '../../classes/runesWebScraper';
+import RuneWebScrap from '../../classes/runesWebScrap';
 import IChampionSelectRequest from '../../interfaces/IChampionSelectRequest';
 import LeagueOfLegendsClientApi from '../../libs/LeagueOfLegendsClientApi';
 import LeagueOfLegendsExternalApi from '../../libs/LeagueOfLegendsExternalApi';

@@ -2,7 +2,7 @@ import puppeteer from 'puppeteer-core';
 import * as cheerio from 'cheerio';
 import IRune from '../interfaces/IRune';
 
-export default class RuneRequest {
+export default class RuneWebScrap {
   public runeList: string[] = [];
 
   constructor(public champion: string, public lane: string) {}
