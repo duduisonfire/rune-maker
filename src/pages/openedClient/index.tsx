@@ -64,7 +64,7 @@ export default function OpenedClient(): JSX.Element {
     getMatchesData();
 
     if (summonerNameElement.current?.innerHTML === '' || matchesElement.current?.innerHTML === '') {
-      getLolVersion();
+      getMatchesData();
     }
   }, [lolClientApi, matchesElement, summonerNameElement]);
 
