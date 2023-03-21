@@ -5,11 +5,10 @@ import RuneWebScrap from '../../libs/RunesWebScrap';
 import IChampionSelectRequest from '../../interfaces/IChampionSelectRequest';
 import LeagueOfLegendsClientApi from '../../libs/LeagueOfLegendsClientApi';
 import LeagueOfLegendsExternalApi from '../../libs/LeagueOfLegendsExternalApi';
-import { Container } from './styles/container';
 
 export default function InMatch(): JSX.Element {
   const navigate = useNavigate();
-  const [champion, setChampion] = useState('Choose champion');
+  const [champion, setChampion] = useState('');
   const [lolVersion, setLolVersion] = useState('');
   const lolClientApi = LeagueOfLegendsClientApi.create();
 
@@ -28,7 +27,7 @@ export default function InMatch(): JSX.Element {
         const res = await lolClientApi.inChampionSelect();
         return res;
       },
-      refetchInterval: 300,
+      refetchInterval: 100,
     });
     return [res1, res2];
   };
@@ -51,12 +50,10 @@ export default function InMatch(): JSX.Element {
   });
 
   useEffect(() => {
-    const championSelect = match?.data as IChampionSelectRequest;
     const getChampionName = async () => {
-      const champion = await LeagueOfLegendsExternalApi.getChampionName(
-        championSelect.actions[0][0].championId.toString(),
-        lolVersion,
-      );
+      const championSelect = match?.data as IChampionSelectRequest;
+      const player = championSelect.actions[0][0];
+      const champion = await LeagueOfLegendsExternalApi.getChampionName(player.championId.toString(), lolVersion);
 
       setChampion(champion);
     };
@@ -65,8 +62,20 @@ export default function InMatch(): JSX.Element {
   }, [match?.data, lolVersion]);
 
   return (
-    <Container>
-      <h1 className="text-white">{champion}</h1>
-    </Container>
+    <div className="col-start-2 col-end-12 grid grid-cols-12">
+      {champion === '' ? (
+        <div className="self-center col-start-2 col-end-12">
+          <h1 className="text-white text-xl">Select your champion</h1>
+        </div>
+      ) : (
+        <div className="self-center col-start-3 col-end-6">
+          <img
+            src={`https://raw.githubusercontent.com/InFinity54/LoL_DDragon/master/img/champion/loading/${champion}_0.jpg`}
+            alt="Champion"
+            height={450}
+          />
+        </div>
+      )}
+    </div>
   );
 }

@@ -1,8 +1,7 @@
 import React from 'react';
 import IPLayerPosGameStats from '../../interfaces/IPlayerPosGameStats';
 
-export default function ItemList(props: { version: string; player: IPLayerPosGameStats }): JSX.Element {
-  const version = props.version;
+export default function ItemList(props: { player: IPLayerPosGameStats }): JSX.Element {
   const player = props.player;
   const item: string[] = [];
 
@@ -19,7 +18,7 @@ export default function ItemList(props: { version: string; player: IPLayerPosGam
       {item.map((item: string) => (
         <img
           className="border-x border-y border-amber-400 mx-1"
-          src={`http://ddragon.leagueoflegends.com/cdn/${version}/img/item/${item}.png`}
+          src={`https://raw.githubusercontent.com/InFinity54/LoL_DDragon/master/latest/img/item/${item}.png`}
           alt="Item"
         />
       ))}

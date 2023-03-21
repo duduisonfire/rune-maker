@@ -41,6 +41,18 @@ export default function OpenedClient(): JSX.Element {
   const [{ status: toClose }, { status: toMatch }] = QueryMultiple();
 
   useEffect(() => {
+    if (toClose === 'error') {
+      navigate('/closed');
+    }
+  }, [navigate, toClose]);
+
+  useEffect(() => {
+    if (toMatch === 'success') {
+      navigate('/inmatch');
+    }
+  }, [navigate, toMatch]);
+
+  useEffect(() => {
     const getLolVersion = async () => {
       const versionResponse = await LeagueOfLegendsExternalApi.getLolVersion();
       const version = versionResponse;
@@ -67,18 +79,6 @@ export default function OpenedClient(): JSX.Element {
       getMatchesData();
     }
   }, [lolClientApi, matchesElement, summonerNameElement]);
-
-  useEffect(() => {
-    if (toClose === 'error') {
-      navigate('/closed');
-    }
-  }, [navigate, toClose]);
-
-  useEffect(() => {
-    if (toMatch === 'success') {
-      navigate('/inmatch');
-    }
-  }, [navigate, toMatch]);
 
   return (
     <MatchesContainer>

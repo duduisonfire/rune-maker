@@ -10,7 +10,7 @@ export default function MatchBox(props: { version: string; player: IPLayerPosGam
   const matchResult = player.stats.win ? 'VICTORY' : 'DEFEAT';
   const resultTextColor = player.stats.win ? 'text-green-400' : 'text-red-400';
   const resultBorderColor = player.stats.win ? 'border-green-400' : 'border-red-400';
-  const [championName, setChampionName] = useState('');
+  const [champion, setChampion] = useState('');
 
   useEffect(() => {
     const getChampionName = async () => {
@@ -19,7 +19,7 @@ export default function MatchBox(props: { version: string; player: IPLayerPosGam
         version,
       );
 
-      setChampionName(championNameResponse);
+      setChampion(championNameResponse);
     };
 
     getChampionName();
@@ -28,14 +28,14 @@ export default function MatchBox(props: { version: string; player: IPLayerPosGam
   return (
     <MatchBoxContainer className={`${resultBorderColor}`}>
       <img
-        src={`http://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${championName}.png`}
+        src={`https://raw.githubusercontent.com/InFinity54/LoL_DDragon/master/latest/img/champion/${champion}.png`}
         alt="Champion"
         className="m-2 col-start-1"
         width={150}
         height={150}
       />
       <h1 className={`col-start-3 self-center ${resultTextColor}`}>{matchResult}</h1>
-      <ItemList version={version} player={player} />
+      <ItemList player={player} />
       <div className="m-2 self-center flex col-start-11">
         <h6 className="mx-1">{player.stats.kills}</h6>
         <h6 className="mx-1">/</h6>
