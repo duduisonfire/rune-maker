@@ -25,7 +25,7 @@ export default function OpenedClient(): JSX.Element {
         const res = await lolClientApi.requestSummonerData();
         return res;
       },
-      refetchInterval: 500,
+      refetchInterval: 400,
     });
     const res2 = useQuery({
       queryKey: ['inMatch'],
