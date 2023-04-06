@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Container } from './styles/container';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
-import createLeagueOfLegendsAxiosInstance from '../../libs/LeagueOfLegendsAxiosInstance';
+import LeagueOfLegendsClient from '../../libs/LeagueOfLegendsClient';
 import ElectronApi from '../../libs/ElectronApi';
 
 export default function ClosedClient(): JSX.Element {
@@ -24,7 +24,7 @@ export default function ClosedClient(): JSX.Element {
         const lockfileData = await electron.getLockfileContent();
         localStorage.setItem('lockfileData', JSON.stringify(lockfileData));
 
-        const handshakeRequest = await createLeagueOfLegendsAxiosInstance().get('/lol-login/v1/session');
+        const handshakeRequest = await LeagueOfLegendsClient().get('/lol-login/v1/session');
         const clientIsTrulyOpened = handshakeRequest.status;
 
         if (clientIsTrulyOpened === 200) {
