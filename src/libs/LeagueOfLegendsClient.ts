@@ -1,5 +1,5 @@
 import axios from 'axios';
-import ILockfileData from '../interfaces/LockfileData';
+import ILockfileData from '../interfaces/ILockfileData';
 
 export default function LeagueOfLegendsClient() {
   const lockfile = JSON.parse(localStorage.getItem('lockfileData') as string) as ILockfileData;
