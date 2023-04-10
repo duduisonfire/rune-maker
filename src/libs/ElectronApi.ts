@@ -1,4 +1,4 @@
-import ILockfileData from '../interfaces/LockfileData';
+import ILockfileData from '../interfaces/ILockfileData';
 
 export default class ElectronApi {
   getLeagueOfLegendsPath(file: HTMLElement) {
