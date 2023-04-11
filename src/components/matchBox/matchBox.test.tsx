@@ -15,13 +15,6 @@ const player = {
     kills: 10,
     deaths: 3,
     assists: 12,
-    item0: 0,
-    item1: 0,
-    item2: 0,
-    item3: 7050,
-    item4: 7050,
-    item5: 7050,
-    item6: 7050,
   },
 } as unknown as IPLayerPosGameStats;
 
