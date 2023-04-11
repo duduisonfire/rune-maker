@@ -1,4 +1,5 @@
 export default interface IPLayerPosGameStats {
+  [index: string]: number | string | boolean | object;
   championId: number;
   highestAchievedSeasonTier: string;
   participantId: number;
