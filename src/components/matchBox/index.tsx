@@ -26,7 +26,7 @@ export default function MatchBox(props: { version: string; player: IPLayerPosGam
   });
 
   return (
-    <MatchBoxContainer className={`${resultBorderColor}`}>
+    <MatchBoxContainer title="matchbox-container" className={`${resultBorderColor}`}>
       <img
         src={`https://raw.githubusercontent.com/InFinity54/LoL_DDragon/master/latest/img/champion/${champion}.png`}
         alt="Champion"

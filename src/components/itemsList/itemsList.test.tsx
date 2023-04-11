@@ -31,7 +31,7 @@ describe('<ItemList />', () => {
     }
   });
 
-  it('should be render an item with your respective correctly photo', () => {
+  it('should be render an item list with your respective correctly photo', () => {
     render(<ItemList player={player} />);
 
     const itemList = screen.getAllByRole('img', { name: 'Item' });
