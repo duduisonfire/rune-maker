@@ -1,8 +1,8 @@
 import React, { MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ElectronApi from '../../libs/ElectronApi';
+import IElectronApi from '../../interfaces/IElectronApi';
 
-export default function SelectFolder(props: { electron: ElectronApi }): JSX.Element {
+export default function SelectFolder(props: { electron: IElectronApi }): JSX.Element {
   const navigate = useNavigate();
   const electron = props.electron;
 

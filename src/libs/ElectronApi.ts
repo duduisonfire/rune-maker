@@ -1,6 +1,7 @@
+import IElectronApi from '../interfaces/IElectronApi';
 import ILockfileData from '../interfaces/ILockfileData';
 
-export default class ElectronApi {
+export default class ElectronApi implements IElectronApi {
   getLeagueOfLegendsPath(file: HTMLElement) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
