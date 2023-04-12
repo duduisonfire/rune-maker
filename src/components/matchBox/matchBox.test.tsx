@@ -18,7 +18,7 @@ const player = {
   },
 } as unknown as IPLayerPosGameStats;
 
-describe('<ItemList />', () => {
+describe('<MatchBox />', () => {
   it('should be render a matchbox with border color green', () => {
     render(<MatchBox version="13.7.1" player={player} />);
 

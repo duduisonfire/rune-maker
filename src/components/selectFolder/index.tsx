@@ -20,7 +20,7 @@ export default function SelectFolder(props: { electron: IElectronApi }): JSX.Ele
 
   return (
     <form>
-      <input type="file" id="file-input"></input>
+      <input title="file-input" type="file" id="file-input"></input>
       <input type="button" value="Choose File" onClick={getDir} />
     </form>
   );
