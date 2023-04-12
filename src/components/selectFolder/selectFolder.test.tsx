@@ -105,7 +105,7 @@ describe('<SelectFolder />', () => {
     expect(storage).toBe(true);
   });
 
-  it('local storage "lockfileData " is not empty', () => {
+  it('local storage "lockfileData " should to be not empty', () => {
     render(
       <BrowserRouter>
         <SelectFolder electron={mockElectron} />
@@ -156,7 +156,7 @@ describe('<SelectFolder />', () => {
     expect(click).toBe(true);
   });
 
-  it("'Lockfile' storage should to be null", () => {
+  it("'Lockfile' storage should to be empty", () => {
     render(
       <BrowserRouter>
         <SelectFolder electron={mockElectronFalse} />
