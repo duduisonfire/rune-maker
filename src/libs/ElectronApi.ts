@@ -27,7 +27,7 @@ export default class ElectronApi implements IElectronApi {
   async clientIsOpen() {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    const promise = (await window.lockfile.isOpen()) as boolean;
-    return promise;
+    const isOpen = (await window.lockfile.isOpen()) as boolean;
+    return isOpen;
   }
 }
