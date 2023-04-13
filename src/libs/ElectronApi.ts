@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import IElectronApi from '../interfaces/IElectronApi';
 import ILockfileData from '../interfaces/ILockfileData';
 
