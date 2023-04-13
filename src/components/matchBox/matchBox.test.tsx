@@ -18,6 +18,16 @@ const player = {
   },
 } as unknown as IPLayerPosGameStats;
 
+const playerLose = {
+  championId: 266,
+  stats: {
+    win: false,
+    kills: 10,
+    deaths: 3,
+    assists: 12,
+  },
+} as unknown as IPLayerPosGameStats;
+
 describe('<MatchBox />', () => {
   it('should be render a matchbox with border color green', () => {
     render(<MatchBox version="13.7.1" player={player} />);
@@ -30,6 +40,20 @@ describe('<MatchBox />', () => {
     render(<MatchBox version="13.7.1" player={player} />);
 
     const matchBoxResult = screen.getByRole('heading', { name: 'VICTORY' });
+    expect(matchBoxResult).toBeInTheDocument();
+  });
+
+  it('should be render a matchbox with border red green', () => {
+    render(<MatchBox version="13.7.1" player={playerLose} />);
+
+    const matchBox = screen.getByTitle('matchbox-container');
+    expect(matchBox.classList.contains('border-red-400')).toBe(true);
+  });
+
+  it('should be render a matchbox with DEFEAT text', () => {
+    render(<MatchBox version="13.7.1" player={playerLose} />);
+
+    const matchBoxResult = screen.getByRole('heading', { name: 'DEFEAT' });
     expect(matchBoxResult).toBeInTheDocument();
   });
 
