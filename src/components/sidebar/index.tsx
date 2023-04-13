@@ -1,6 +1,5 @@
 import React from 'react';
-import { Sidebar } from './styled';
 
-export default function Index(): JSX.Element {
-  return <Sidebar></Sidebar>;
+export default function Sidebar(): JSX.Element {
+  return <div title="sidebar" className="  bg-black h-screen"></div>;
 }
