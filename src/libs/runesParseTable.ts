@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import IRunesParseTable from '../interfaces/IRunesParseTable';
 
 const runesParseTable = {
