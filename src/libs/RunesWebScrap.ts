@@ -8,7 +8,7 @@ export default class RuneWebScrap implements IRuneWebScrap {
 
   constructor(public champion: string, public lane: string) {}
 
-  private async scrapRuneWebPage() {
+  private async getRuneWebPage() {
     const browser = await puppeteer.launch({ channel: 'chrome' });
 
     const browserPage = await browser.newPage();
@@ -36,8 +36,8 @@ export default class RuneWebScrap implements IRuneWebScrap {
     return runeWebPageContent;
   }
 
-  async selectRunesFromPage() {
-    const pageContent = await this.scrapRuneWebPage();
+  async selectRunes() {
+    const pageContent = await this.getRuneWebPage();
     const selector = cheerio.load(pageContent);
 
     const treeNameList = selector('.perk-style-title').contents();
