@@ -9,7 +9,10 @@ class LeagueOfLegendsClientApi {
   constructor(private LeagueOfLegendsClient: AxiosInstance) {}
 
   static create() {
-    return new LeagueOfLegendsClientApi(LeagueOfLegendsClient());
+    const lockfile = JSON.parse(localStorage.getItem('lockfileData') as string);
+    const lolClient = new LeagueOfLegendsClient(lockfile).LeagueOfLegendsClientInstance();
+
+    return new LeagueOfLegendsClientApi(lolClient);
   }
 
   async requestSummonerData() {
