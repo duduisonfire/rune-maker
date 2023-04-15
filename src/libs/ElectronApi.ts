@@ -24,4 +24,12 @@ export default class ElectronApi implements IElectronApi {
     const isOpen = (await window.lockfile.isOpen()) as boolean;
     return isOpen;
   }
+
+  watch() {
+    window.lockfile.watch();
+  }
+
+  openHandle() {
+    window.lockfile.openHandles();
+  }
 }
