@@ -4,12 +4,13 @@ import IGetRunePage from '../interfaces/IGetRunePage';
 import ICreateRunePage from '../interfaces/ICreateRunePage';
 import { AxiosInstance } from 'axios';
 import LeagueOfLegendsClient from './LeagueOfLegendsClient';
+import ILockfileData from '../interfaces/ILockfileData';
 
 class LeagueOfLegendsClientApi {
   constructor(private LeagueOfLegendsClient: AxiosInstance) {}
 
   static create() {
-    const lockfile = JSON.parse(localStorage.getItem('lockfileData') as string);
+    const lockfile = JSON.parse(localStorage.getItem('lockfileData') as string) as ILockfileData;
     const lolClient = new LeagueOfLegendsClient(lockfile).LeagueOfLegendsClientInstance();
 
     return new LeagueOfLegendsClientApi(lolClient);
