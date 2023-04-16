@@ -23,8 +23,8 @@ export default function ClosedClient(): JSX.Element {
       if (data) {
         const lockfileData = await electron.getLockfileContent();
         localStorage.setItem('lockfileData', JSON.stringify(lockfileData));
-
-        const handshakeRequest = await LeagueOfLegendsClient().get('/lol-login/v1/session');
+        const lolClient = new LeagueOfLegendsClient(lockfileData);
+        const handshakeRequest = await lolClient.LeagueOfLegendsClientInstance().get('/lol-login/v1/session');
         const clientIsTrulyOpened = handshakeRequest.status;
 
         if (clientIsTrulyOpened === 200) {

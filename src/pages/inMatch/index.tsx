@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import RuneWebScrap from '../../libs/RunesWebScrap';
@@ -10,7 +10,7 @@ export default function InMatch(): JSX.Element {
   const navigate = useNavigate();
   const [champion, setChampion] = useState('');
   const [lolVersion, setLolVersion] = useState('');
-  const lolClientApi = LeagueOfLegendsClientApi.create();
+  const lolClientApi = useMemo(() => LeagueOfLegendsClientApi.create(), []);
 
   const QueryMultiple = () => {
     const res1 = useQuery({
