@@ -1,19 +1,27 @@
-import IMatchData from '../interfaces/IMatchesData';
+import IMatchesData from '../interfaces/IMatchesData';
 import ISummonerData from '../interfaces/ISummonerData';
 import IGetRunePage from '../interfaces/IGetRunePage';
 import ICreateRunePage from '../interfaces/ICreateRunePage';
-import { AxiosInstance } from 'axios';
+import { AxiosError, AxiosInstance } from 'axios';
 import LeagueOfLegendsClient from './LeagueOfLegendsClient';
 import ILockfileData from '../interfaces/ILockfileData';
 
 class LeagueOfLegendsClientApi {
   constructor(private LeagueOfLegendsClient: AxiosInstance) {}
 
-  static create() {
-    const lockfile = JSON.parse(localStorage.getItem('lockfileData') as string) as ILockfileData;
+  static create(lockfile: ILockfileData) {
     const lolClient = new LeagueOfLegendsClient(lockfile).LeagueOfLegendsClientInstance();
 
     return new LeagueOfLegendsClientApi(lolClient);
+  }
+
+  async handshakeRequest() {
+    try {
+      await this.LeagueOfLegendsClient.get('/lol-login/v1/session');
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 
   async requestSummonerData() {
@@ -26,22 +34,28 @@ class LeagueOfLegendsClientApi {
     const response = await this.LeagueOfLegendsClient.get(
       '/lol-match-history/v1/products/lol/current-summoner/matches',
     );
-    const responseData = response.data as IMatchData;
+    const responseData = response.data as IMatchesData;
     return responseData;
   }
 
-  async getCurrentRunePage(): Promise<IGetRunePage | void> {
+  async getCurrentRunePage(): Promise<IGetRunePage | AxiosError> {
     try {
       const response = await this.LeagueOfLegendsClient.get('/lol-perks/v1/currentpage/');
       const responseData = response.data as IGetRunePage;
       return responseData;
     } catch (error) {
-      return error;
+      const err = error as AxiosError;
+      return err;
     }
   }
 
   async deleteCurrentRunePage(id: string) {
-    await this.LeagueOfLegendsClient.delete(`/lol-perks/v1/pages/${id}/`);
+    try {
+      await this.LeagueOfLegendsClient.delete(`/lol-perks/v1/pages/${id}/`);
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 
   async createCurrentRunePage(body: ICreateRunePage) {

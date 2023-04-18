@@ -8,13 +8,15 @@ import IMatchesData from '../../interfaces/IMatchesData';
 import IGameData from '../../interfaces/IGameData';
 import LeagueOfLegendsExternalApi from '../../libs/LeagueOfLegendsExternalApi';
 import { useQuery } from 'react-query';
+import ILockfileData from '../../interfaces/ILockfileData';
 
 export default function OpenedClient(): JSX.Element {
+  const lockfile = JSON.parse(localStorage.getItem('lockfileData') as string) as ILockfileData;
   const navigate = useNavigate();
   const [version, setVersion] = useState('');
   const [summonerData, setSummonerData] = useState({} as ISummonerData);
   const [matchesData, setMatchesData] = useState({} as IMatchesData);
-  const lolClientApi = useMemo(() => LeagueOfLegendsClientApi.create(), []);
+  const lolClientApi = useMemo(() => LeagueOfLegendsClientApi.create(lockfile), [lockfile]);
   const summonerNameElement: RefObject<HTMLDivElement> = createRef();
   const matchesElement: RefObject<HTMLDivElement> = createRef();
 

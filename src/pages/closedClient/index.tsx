@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { Container } from './styles/container';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
-import LeagueOfLegendsClient from '../../libs/LeagueOfLegendsClient';
 import ElectronApi from '../../libs/ElectronApi';
+import LeagueOfLegendsClientApi from '../../libs/LeagueOfLegendsClientApi';
 
 export default function ClosedClient(): JSX.Element {
   const navigate = useNavigate();
@@ -23,11 +23,10 @@ export default function ClosedClient(): JSX.Element {
       if (data) {
         const lockfileData = await electron.getLockfileContent();
         localStorage.setItem('lockfileData', JSON.stringify(lockfileData));
-        const lolClient = new LeagueOfLegendsClient(lockfileData);
-        const handshakeRequest = await lolClient.LeagueOfLegendsClientInstance().get('/lol-login/v1/session');
-        const clientIsTrulyOpened = handshakeRequest.status;
+        const lolClient = LeagueOfLegendsClientApi.create(lockfileData);
+        const clientIsTrulyOpened = await lolClient.handshakeRequest();
 
-        if (clientIsTrulyOpened === 200) {
+        if (clientIsTrulyOpened) {
           window.setTimeout(() => {
             navigate('/open');
           }, 1000);

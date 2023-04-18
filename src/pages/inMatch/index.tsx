@@ -5,12 +5,14 @@ import RuneWebScrap from '../../libs/RunesWebScrap';
 import IChampionSelectRequest from '../../interfaces/IChampionSelectRequest';
 import LeagueOfLegendsClientApi from '../../libs/LeagueOfLegendsClientApi';
 import LeagueOfLegendsExternalApi from '../../libs/LeagueOfLegendsExternalApi';
+import ILockfileData from '../../interfaces/ILockfileData';
 
 export default function InMatch(): JSX.Element {
+  const lockfile = JSON.parse(localStorage.getItem('lockfileData') as string) as ILockfileData;
   const navigate = useNavigate();
   const [champion, setChampion] = useState('');
   const [lolVersion, setLolVersion] = useState('');
-  const lolClientApi = useMemo(() => LeagueOfLegendsClientApi.create(), []);
+  const lolClientApi = useMemo(() => LeagueOfLegendsClientApi.create(lockfile), [lockfile]);
 
   const QueryMultiple = () => {
     const res1 = useQuery({
