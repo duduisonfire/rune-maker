@@ -44,4 +44,8 @@ describe('RunePageToCreate Lib Tests', () => {
       expect(runePage.selectedPerkIds[index - 2]).toBe(runeId);
     }
   });
+
+  it('runePage.current should be "true"', async () => {
+    expect(runePage.current).toBe(true);
+  });
 });
