@@ -68,8 +68,7 @@ export default function OpenedClient(): JSX.Element {
     };
 
     const getMatchesData = async () => {
-      const matchDataResponse = await lolClientApi.requestMatchesData();
-      const matchData = matchDataResponse;
+      const matchData = await lolClientApi.requestMatchesData();
       setMatchesData(matchData);
     };
 
