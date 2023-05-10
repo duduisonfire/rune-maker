@@ -60,8 +60,13 @@ export default function InMatch(): JSX.Element {
       setChampion(champion);
     };
 
+    const getRunes = async () => {
+      const webScrapper = new RuneWebScrap(champion, 'mid');
+    };
+
     getChampionName();
-  }, [match?.data, lolVersion]);
+    getRunes();
+  }, [match?.data, lolVersion, champion]);
 
   return (
     <div className="col-start-2 col-end-12 grid grid-cols-12">
