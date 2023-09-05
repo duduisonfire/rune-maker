@@ -10,5 +10,5 @@ An another League of Legends assistant.
 
 # How to use
 1. Run Rune Maker
-2. Choose the LeagueClient.exe on the League of Lengds Folder.
+2. Choose the LeagueClient.exe on the League of Legends Folder.
 3. The rest the program does for you.
