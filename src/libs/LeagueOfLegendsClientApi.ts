@@ -2,9 +2,10 @@ import IMatchesData from '../interfaces/IMatchesData';
 import ISummonerData from '../interfaces/ISummonerData';
 import IGetRunePage from '../interfaces/IGetRunePage';
 import ICreateRunePage from '../interfaces/ICreateRunePage';
-import { AxiosError, AxiosInstance } from 'axios';
+import { AxiosInstance } from 'axios';
 import LeagueOfLegendsClient from './LeagueOfLegendsClient';
 import ILockfileData from '../interfaces/ILockfileData';
+import IChampionSelectRequest from '../interfaces/IChampionSelectRequest';
 
 class LeagueOfLegendsClientApi {
   constructor(private LeagueOfLegendsClient: AxiosInstance) {}
@@ -38,18 +39,18 @@ class LeagueOfLegendsClientApi {
     return responseData;
   }
 
-  async getCurrentRunePage(): Promise<IGetRunePage | AxiosError> {
+  async getCurrentRunePage(): Promise<IGetRunePage> {
     try {
       const response = await this.LeagueOfLegendsClient.get('/lol-perks/v1/currentpage/');
       const responseData = response.data as IGetRunePage;
       return responseData;
     } catch (error) {
-      const err = error as AxiosError;
-      return err;
+      const responseData = await this.getCurrentRunePage();
+      return responseData;
     }
   }
 
-  async deleteCurrentRunePage(id: string) {
+  async deleteCurrentRunePage(id: number) {
     try {
       await this.LeagueOfLegendsClient.delete(`/lol-perks/v1/pages/${id}/`);
       return true;
@@ -77,6 +78,19 @@ class LeagueOfLegendsClientApi {
     const response = await this.LeagueOfLegendsClient.get('/lol-champ-select/v1/current-champion/');
 
     return response;
+  }
+
+  getLane(championSelectStage: IChampionSelectRequest) {
+    const team = championSelectStage.myTeam;
+    let lane = '';
+
+    for (let index = 0; index < team.length; index++) {
+      if (championSelectStage.localPlayerCellId === team[index].cellId) {
+        lane = team[index].assignedPosition;
+      }
+    }
+
+    return lane;
   }
 }
 

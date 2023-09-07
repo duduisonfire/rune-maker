@@ -1,72 +1,55 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import RuneWebScrap from '../../libs/RunesWebScrap';
 import IChampionSelectRequest from '../../interfaces/IChampionSelectRequest';
 import LeagueOfLegendsClientApi from '../../libs/LeagueOfLegendsClientApi';
 import LeagueOfLegendsExternalApi from '../../libs/LeagueOfLegendsExternalApi';
 import ILockfileData from '../../interfaces/ILockfileData';
+import GetRunesApi from '../../libs/GetRunesApi';
+import RunePageToCreate from '../../libs/RunePageToCreate';
 
 export default function InMatch(): JSX.Element {
   const lockfile = JSON.parse(localStorage.getItem('lockfileData') as string) as ILockfileData;
   const navigate = useNavigate();
   const [champion, setChampion] = useState('');
-  const [lolVersion, setLolVersion] = useState('');
   const lolClientApi = useMemo(() => LeagueOfLegendsClientApi.create(lockfile), [lockfile]);
+  const runePageApi = useMemo(() => new GetRunesApi(), []);
 
   const QueryMultiple = () => {
     const res1 = useQuery({
-      queryKey: ['isClosed'],
-      queryFn: async () => {
-        const res = await lolClientApi.inChampionSelect();
-        return res;
-      },
-      refetchInterval: 500,
-    });
-    const res2 = useQuery({
       queryKey: ['inMatch'],
       queryFn: async () => {
         const res = await lolClientApi.inChampionSelect();
+        const championSelectStage = res?.data as IChampionSelectRequest;
+        const player = championSelectStage.actions[0][0];
+        const lolVersion = await LeagueOfLegendsExternalApi.getLolVersion();
+        const championToSet = await LeagueOfLegendsExternalApi.getChampionName(
+          player.championId.toString(),
+          lolVersion,
+        );
+
+        if (championToSet !== champion) {
+          const lane = lolClientApi.getLane(championSelectStage);
+
+          const runes = await runePageApi.getChampionRunes(championToSet, lane);
+          const runePage = new RunePageToCreate(runes);
+
+          const currentRunePage = await lolClientApi.getCurrentRunePage();
+          await lolClientApi.deleteCurrentRunePage(currentRunePage.id);
+          await lolClientApi.createCurrentRunePage(runePage);
+
+          setChampion(championToSet);
+        }
+
         return res;
       },
       refetchInterval: 100,
     });
-    return [res1, res2];
+
+    if (res1.status === 'error') navigate('/closed');
   };
 
-  const [{ status: test }, { status, data: match }] = QueryMultiple();
-
-  useEffect(() => {
-    if (status === 'error') {
-      navigate('/closed');
-    }
-  });
-
-  useEffect(() => {
-    const getLolVersion = async () => {
-      const lolVersion = await LeagueOfLegendsExternalApi.getLolVersion();
-      setLolVersion(lolVersion);
-    };
-
-    getLolVersion();
-  });
-
-  useEffect(() => {
-    const getChampionName = async () => {
-      const championSelect = match?.data as IChampionSelectRequest;
-      const player = championSelect.actions[0][0];
-      const champion = await LeagueOfLegendsExternalApi.getChampionName(player.championId.toString(), lolVersion);
-
-      setChampion(champion);
-    };
-
-    const getRunes = async () => {
-      const webScrapper = new RuneWebScrap(champion, 'mid');
-    };
-
-    getChampionName();
-    getRunes();
-  }, [match?.data, lolVersion, champion]);
+  QueryMultiple();
 
   return (
     <div className="col-start-2 col-end-12 grid grid-cols-12">
@@ -78,7 +61,7 @@ export default function InMatch(): JSX.Element {
         <div className="self-center col-start-3 col-end-6">
           <img
             src={`https://raw.githubusercontent.com/InFinity54/LoL_DDragon/master/img/champion/loading/${champion}_0.jpg`}
-            alt="Champion"
+            alt={`Champion: ${champion}`}
             height={450}
           />
         </div>

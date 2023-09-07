@@ -1,22 +1,18 @@
 import ICreateRunePage from '../interfaces/ICreateRunePage';
-import IRuneWebScrap from '../interfaces/IRuneWebScrap';
-import runesParseTable from './runesParseTable';
+import IRunePage from '../interfaces/IRunePage';
+
 export default class RunePageToCreate implements ICreateRunePage {
   name: string;
   primaryStyleId: number;
   subStyleId: number;
-  selectedPerkIds: number[] = [];
+  selectedPerkIds: number[];
   current: boolean;
 
-  constructor(runes: IRuneWebScrap) {
+  constructor(runes: IRunePage) {
     this.name = runes.champion;
-    this.primaryStyleId = runesParseTable[runes.runeList[0]];
-    this.subStyleId = runesParseTable[runes.runeList[1]];
-
-    for (let index = 2; index < 11; index++) {
-      this.selectedPerkIds.push(runesParseTable[runes.runeList[index]]);
-    }
-
+    this.primaryStyleId = runes.runesId.primaryStyleId;
+    this.subStyleId = runes.runesId.subStyleId;
+    this.selectedPerkIds = runes.runesId.selectedPerkIds;
     this.current = true;
   }
 }

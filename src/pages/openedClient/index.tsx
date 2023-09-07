@@ -1,4 +1,4 @@
-import React, { createRef, RefObject, useEffect, useMemo, useState } from 'react';
+import React, { createRef, RefObject, useMemo, useState } from 'react';
 import { MatchesContainer } from './styles/MatchesContainer';
 import { useNavigate } from 'react-router-dom';
 import LeagueOfLegendsClientApi from '../../libs/LeagueOfLegendsClientApi';
@@ -37,49 +37,26 @@ export default function OpenedClient(): JSX.Element {
       },
       refetchInterval: 500,
     });
-    return [res1, res2];
+    useQuery({
+      queryKey: ['firstRender'],
+      queryFn: async () => {
+        const res = await lolClientApi.requestSummonerData();
+        const lolVersionToSet = await LeagueOfLegendsExternalApi.getLolVersion();
+        setVersion(lolVersionToSet);
+        const summonerDataResponse = await lolClientApi.requestSummonerData();
+        setSummonerData(summonerDataResponse);
+        const matchData = await lolClientApi.requestMatchesData();
+        setMatchesData(matchData);
+
+        return res;
+      },
+    });
+
+    if (res1.status === 'error') navigate('/closed');
+    if (res2.status === 'success') navigate('/inmatch');
   };
 
-  const [{ status: toClose }, { status: toMatch }] = QueryMultiple();
-
-  useEffect(() => {
-    if (toClose === 'error') {
-      navigate('/closed');
-    }
-  }, [navigate, toClose]);
-
-  useEffect(() => {
-    if (toMatch === 'success') {
-      navigate('/inmatch');
-    }
-  }, [navigate, toMatch]);
-
-  useEffect(() => {
-    const getLolVersion = async () => {
-      const versionResponse = await LeagueOfLegendsExternalApi.getLolVersion();
-      const version = versionResponse;
-      setVersion(version);
-    };
-
-    const getSummonerData = async () => {
-      const summonerDataResponse = await lolClientApi.requestSummonerData();
-      const summonerData = summonerDataResponse;
-      setSummonerData(summonerData);
-    };
-
-    const getMatchesData = async () => {
-      const matchData = await lolClientApi.requestMatchesData();
-      setMatchesData(matchData);
-    };
-
-    getLolVersion();
-    getSummonerData();
-    getMatchesData();
-
-    if (summonerNameElement.current?.innerHTML === '' || matchesElement.current?.innerHTML === '') {
-      getMatchesData();
-    }
-  }, [lolClientApi, matchesElement, summonerNameElement]);
+  QueryMultiple();
 
   return (
     <MatchesContainer>
