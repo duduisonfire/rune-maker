@@ -44,7 +44,7 @@ export default function InMatch(): JSX.Element {
 
         return res;
       },
-      refetchInterval: 100,
+      refetchInterval: 500,
     });
 
     if (res1.status === 'error') navigate('/closed');
