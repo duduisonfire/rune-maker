@@ -7,11 +7,13 @@ import LeagueOfLegendsExternalApi from '../../libs/LeagueOfLegendsExternalApi';
 import ILockfileData from '../../interfaces/ILockfileData';
 import GetRunesApi from '../../libs/GetRunesApi';
 import RunePageToCreate from '../../libs/RunePageToCreate';
+import IRunePage from '../../interfaces/IRunePage';
 
 export default function InMatch(): JSX.Element {
   const lockfile = JSON.parse(localStorage.getItem('lockfileData') as string) as ILockfileData;
   const navigate = useNavigate();
   const [champion, setChampion] = useState('');
+  const [runes, setRunes] = useState<IRunePage>();
   const lolClientApi = useMemo(() => LeagueOfLegendsClientApi.create(lockfile), [lockfile]);
   const runePageApi = useMemo(() => new GetRunesApi(), []);
 
@@ -20,6 +22,7 @@ export default function InMatch(): JSX.Element {
       queryKey: ['inMatch'],
       queryFn: async () => {
         const res = await lolClientApi.inChampionSelect();
+
         const championSelectStage = res?.data as IChampionSelectRequest;
         const player = championSelectStage.actions[0][0];
         const lolVersion = await LeagueOfLegendsExternalApi.getLolVersion();
@@ -29,16 +32,14 @@ export default function InMatch(): JSX.Element {
         );
 
         if (championToSet !== champion) {
+          setChampion(championToSet);
           const lane = lolClientApi.getLane(championSelectStage);
-
           const runes = await runePageApi.getChampionRunes(championToSet, lane);
+          setRunes(runes);
           const runePage = new RunePageToCreate(runes);
-
           const currentRunePage = await lolClientApi.getCurrentRunePage();
           await lolClientApi.deleteCurrentRunePage(currentRunePage.id);
           await lolClientApi.createCurrentRunePage(runePage);
-
-          setChampion(championToSet);
         }
 
         return res;
@@ -58,7 +59,7 @@ export default function InMatch(): JSX.Element {
           <h1 className="text-white text-xl">Select your champion</h1>
         </div>
       ) : (
-        <div className="self-center col-start-3 col-end-6">
+        <div className="self-center col-start-2 col-end-5">
           <img
             src={`https://raw.githubusercontent.com/InFinity54/LoL_DDragon/master/img/champion/loading/${champion}_0.jpg`}
             alt={`Champion: ${champion}`}
