@@ -13,7 +13,7 @@ export default function InMatch(): JSX.Element {
   const lockfile = JSON.parse(localStorage.getItem('lockfileData') as string) as ILockfileData;
   const navigate = useNavigate();
   const [champion, setChampion] = useState('');
-  const [runes, setRunes] = useState<IRunePage>();
+  const [, setRunes] = useState<IRunePage>();
   const lolClientApi = useMemo(() => LeagueOfLegendsClientApi.create(lockfile), [lockfile]);
   const runePageApi = useMemo(() => new GetRunesApi(), []);
 
