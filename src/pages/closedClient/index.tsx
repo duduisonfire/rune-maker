@@ -39,7 +39,7 @@ export default function ClosedClient(): JSX.Element {
 
   return (
     <Container>
-      <h1 className="text-white">Cliente Fechado</h1>
+      <h1 className="text-white">Client is Closed</h1>
     </Container>
   );
 }
