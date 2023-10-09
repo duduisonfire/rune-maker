@@ -9,6 +9,7 @@ import ISummonerData from '../../interfaces/ISummonerData';
 import IGetRunePage from '../../interfaces/IGetRunePage';
 import IMatchesData from '../../interfaces/IMatchesData';
 import ICreateRunePage from '../../interfaces/ICreateRunePage';
+import IChampionSelectRequest from '../../interfaces/IChampionSelectRequest';
 
 describe('LeagueOfLegendsClintApi Lib Tests', () => {
   it('"LeagueOfLegendsClintApi.create()" should be return an LeagueOfLegendsClientApi Instance', () => {
@@ -98,7 +99,7 @@ describe('LeagueOfLegendsClintApi Lib Tests', () => {
     } as unknown as AxiosInstance;
 
     const lolClient = new LeagueOfLegendsClientApi(mockAxios);
-    const mockResponse = (await lolClient.getCurrentRunePage()) as AxiosError;
+    const mockResponse = (await lolClient.getCurrentRunePage()) as unknown as AxiosError;
 
     expect(mockResponse.message).toBe('test error');
   });
@@ -111,7 +112,7 @@ describe('LeagueOfLegendsClintApi Lib Tests', () => {
     } as unknown as AxiosInstance;
 
     const lolClient = new LeagueOfLegendsClientApi(mockAxios);
-    const mockResponseData = await lolClient.deleteCurrentRunePage('22');
+    const mockResponseData = await lolClient.deleteCurrentRunePage(22);
 
     expect(mockResponseData).toBe(true);
   });
@@ -124,7 +125,7 @@ describe('LeagueOfLegendsClintApi Lib Tests', () => {
     } as unknown as AxiosInstance;
 
     const lolClient = new LeagueOfLegendsClientApi(mockAxios);
-    const mockResponseData = await lolClient.deleteCurrentRunePage('22');
+    const mockResponseData = await lolClient.deleteCurrentRunePage(22);
 
     expect(mockResponseData).toBe(false);
   });
@@ -181,5 +182,44 @@ describe('LeagueOfLegendsClintApi Lib Tests', () => {
     const mockResponse = await lolClient.currentChampion();
 
     expect(mockResponse.data).toBe('test');
+  });
+
+  it('"getLane" should be a lane name', async () => {
+    const mockAxios = {
+      get(url: string) {
+        return { data: 'test' } as AxiosResponse;
+      },
+    } as unknown as AxiosInstance;
+
+    const championSelectStage = {
+      localPlayerCellId: 3,
+      myTeam: [
+        {
+          cellId: 1,
+          assignedPosition: 'top',
+        },
+        {
+          cellId: 2,
+          assignedPosition: 'mid',
+        },
+        {
+          cellId: 3,
+          assignedPosition: 'jungle',
+        },
+        {
+          cellId: 4,
+          assignedPosition: 'bot',
+        },
+        {
+          cellId: 5,
+          assignedPosition: ' supp',
+        },
+      ],
+    } as unknown as IChampionSelectRequest;
+
+    const lolClient = new LeagueOfLegendsClientApi(mockAxios);
+    const lane = await lolClient.getLane(championSelectStage);
+
+    expect(lane).toBe('jungle');
   });
 });

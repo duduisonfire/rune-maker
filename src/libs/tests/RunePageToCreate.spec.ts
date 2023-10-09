@@ -1,27 +1,31 @@
 import '@testing-library/jest-dom';
 import RunePageToCreate from '../RunePageToCreate';
-import IRuneWebScrap from '../../interfaces/IRuneWebScrap';
-import runesParseTable from '../runesParseTable';
+import IRunePage from '../../interfaces/IRunePage';
 
-const runeWebScrap: IRuneWebScrap = {
-  runeList: [
-    'Precision',
-    'Resolve',
-    'Conqueror',
-    'Triumph',
-    'Legend: Tenacity',
-    'Last Stand',
-    'Second Wind',
-    'Revitalize',
-    'Adaptive Force',
-    'Adaptive Force',
-    'Magic Resist',
-  ],
+const runesData: IRunePage = {
   champion: 'aatrox',
-  lane: 'top',
+  lane: 'mid',
+  runes: [
+    'Domination',
+    'Sorcery',
+    'Electrocute',
+    'Taste of Blood',
+    'Eyeball Collection',
+    'Ultimate Hunter',
+    'Manaflow Band',
+    'Transcendence',
+    'Attack Speed',
+    'Adaptive Force',
+    'Armor',
+  ],
+  runesId: {
+    primaryStyleId: 8100,
+    subStyleId: 8200,
+    selectedPerkIds: [8112, 8139, 8138, 8106, 8226, 8210, 5005, 5008, 5002],
+  },
 };
 
-const runePage = new RunePageToCreate(runeWebScrap);
+const runePage = new RunePageToCreate(runesData);
 
 describe('RunePageToCreate Lib Tests', () => {
   it('runePage.name should be "aatrox"', async () => {
@@ -29,19 +33,19 @@ describe('RunePageToCreate Lib Tests', () => {
   });
 
   it('runePage.primaryStyleId should be Precision Rune Parse Table Id', async () => {
-    const runeId = runesParseTable['Precision'];
-    expect(runePage.primaryStyleId).toBe(runeId);
+    const primaryStyleId = runesData.runesId.primaryStyleId;
+    expect(runePage.primaryStyleId).toBe(primaryStyleId);
   });
 
   it('runePage.subStyleId should be Resolve Rune Parse Table Id', async () => {
-    const runeId = runesParseTable['Resolve'];
-    expect(runePage.subStyleId).toBe(runeId);
+    const subStyleId = runesData.runesId.subStyleId;
+    expect(runePage.subStyleId).toBe(subStyleId);
   });
 
   it("runePage.selectedPerkIds should be an array of Rune Parse Table Id's", async () => {
-    for (let index = 2; index < runePage.selectedPerkIds.length; index++) {
-      const runeId = runesParseTable[runeWebScrap.runeList[index]];
-      expect(runePage.selectedPerkIds[index - 2]).toBe(runeId);
+    for (let index = 0; index < runePage.selectedPerkIds.length; index++) {
+      const runeId = runesData.runesId.selectedPerkIds[index];
+      expect(runePage.selectedPerkIds[index]).toBe(runeId);
     }
   });
 

@@ -37,9 +37,21 @@ export default function InMatch(): JSX.Element {
           const runes = await runePageApi.getChampionRunes(championToSet, lane);
           setRunes(runes);
           const runePage = new RunePageToCreate(runes);
-          const currentRunePage = await lolClientApi.getCurrentRunePage();
-          await lolClientApi.deleteCurrentRunePage(currentRunePage.id);
-          await lolClientApi.createCurrentRunePage(runePage);
+
+          let successInGetRunePage = false;
+
+          while (!successInGetRunePage) {
+            const currentRunePage = await lolClientApi.getCurrentRunePage();
+
+            if (currentRunePage instanceof Error) {
+              continue;
+            } else {
+              successInGetRunePage = true;
+            }
+
+            await lolClientApi.deleteCurrentRunePage(currentRunePage.id);
+            await lolClientApi.createCurrentRunePage(runePage);
+          }
         }
 
         return res;

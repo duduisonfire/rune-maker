@@ -39,14 +39,13 @@ class LeagueOfLegendsClientApi {
     return responseData;
   }
 
-  async getCurrentRunePage(): Promise<IGetRunePage> {
+  async getCurrentRunePage(): Promise<IGetRunePage | Error> {
     try {
       const response = await this.LeagueOfLegendsClient.get('/lol-perks/v1/currentpage/');
       const responseData = response.data as IGetRunePage;
       return responseData;
     } catch (error) {
-      const responseData = await this.getCurrentRunePage();
-      return responseData;
+      return error as Error;
     }
   }
 
