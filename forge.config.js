@@ -1,22 +1,26 @@
 module.exports = {
-  packagerConfig: {},
+  packagerConfig: {
+    icon: './poro.ico',
+  },
   rebuildConfig: {},
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
-      config: {},
-    },
-    {
-      name: '@electron-forge/maker-zip',
-      platforms: ['darwin'],
+      config: {
+        authors: 'Igor Tiburcio Cavalcanti',
+        exe: `Rune Maker.exe`,
+        name: 'Rune Maker',
+      },
     },
     {
       name: '@electron-forge/maker-deb',
-      config: {},
-    },
-    {
-      name: '@electron-forge/maker-rpm',
-      config: {},
+      config: {
+        options: {
+          bin: 'rune-maker',
+          maintainer: 'Igor Tiburcio Cavalcanti',
+          icon: './poro.ico',
+        },
+      },
     },
   ],
 };
