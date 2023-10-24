@@ -14,7 +14,7 @@ const createWindow = () => {
     fullscreen: false,
     fullscreenable: false,
     resizable: false,
-    //autoHideMenuBar: true,
+    autoHideMenuBar: true,
   });
 
   win.loadFile(path.resolve(__dirname, '..', 'build', 'index.html'));
