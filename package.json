@@ -18,7 +18,7 @@
     "make": "npx tailwindcss -i ./input.css -o ./public/style.css && react-scripts build && tsc && electron-forge make",
     "tailwind": "npx tailwindcss -i ./input.css -o ./public/style.css --watch"
   },
-  "author": "Igor Tiburcio Cavalcanti",
+  "author": "Igor Tiburcio Cavalcanti (duduisonfire)",
   "license": "MIT",
   "devDependencies": {
     "@electron-forge/cli": "^6.0.4",
