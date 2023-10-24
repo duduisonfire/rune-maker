@@ -39,7 +39,8 @@ export default function ClosedClient(): JSX.Element {
 
   return (
     <Container>
-      <h1 className="text-white">Client is Closed</h1>
+      <img src="./imgs/sad-poro.png" alt="No file selected." width={300} height={300} />
+      <h1 className="text-white text-2xl m-12">Client is Closed</h1>
     </Container>
   );
 }
