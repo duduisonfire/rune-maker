@@ -65,9 +65,9 @@ export default function InMatch(): JSX.Element {
   QueryMultiple();
 
   return (
-    <div className="col-start-2 col-end-12 grid grid-cols-12">
+    <div className="col-start-2 col-end-13 grid grid-cols-12">
       {champion === '' ? (
-        <div className="self-center col-start-2 col-end-12">
+        <div className="self-center col-start-2 col-end-13">
           <h1 className="text-white text-xl">Select your champion</h1>
         </div>
       ) : (
