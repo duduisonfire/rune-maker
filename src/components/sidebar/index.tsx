@@ -13,7 +13,7 @@ export default function Sidebar(): JSX.Element {
   }
 
   return (
-    <div className="bg-black h-screen flex justify-center">
+    <div title="sidebar" className="bg-black h-screen flex justify-center">
       <div
         title="Reset Folder"
         className="p-4 px-6 self-end text-white text-2xl hover:bg-opacity-70 hover:bg-gray-800 cursor-pointer"

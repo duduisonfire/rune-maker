@@ -7,13 +7,14 @@ import LeagueOfLegendsExternalApi from '../../libs/LeagueOfLegendsExternalApi';
 import ILockfileData from '../../interfaces/ILockfileData';
 import GetRunesApi from '../../libs/GetRunesApi';
 import RunePageToCreate from '../../libs/RunePageToCreate';
-import IRunePage from '../../interfaces/IRunePage';
+import ICreateRunePage from '../../interfaces/ICreateRunePage';
 
 export default function InMatch(): JSX.Element {
   const lockfile = JSON.parse(localStorage.getItem('lockfileData') as string) as ILockfileData;
   const navigate = useNavigate();
   const [champion, setChampion] = useState('');
-  const [, setRunes] = useState<IRunePage>();
+  const [lane, setLane] = useState('');
+  const [runes, setRunes] = useState<ICreateRunePage>();
   const lolClientApi = useMemo(() => LeagueOfLegendsClientApi.create(lockfile), [lockfile]);
   const runePageApi = useMemo(() => new GetRunesApi(), []);
 
@@ -32,11 +33,11 @@ export default function InMatch(): JSX.Element {
         );
 
         if (championToSet !== champion) {
+          setLane(lolClientApi.getLane(championSelectStage));
           setChampion(championToSet);
-          const lane = lolClientApi.getLane(championSelectStage);
           const runes = await runePageApi.getChampionRunes(championToSet, lane);
-          setRunes(runes);
           const runePage = new RunePageToCreate(runes);
+          setRunes(runePage);
 
           let successInGetRunePage = false;
 
@@ -67,16 +68,33 @@ export default function InMatch(): JSX.Element {
   return (
     <div className="col-start-2 col-end-13 grid grid-cols-12">
       {champion === '' ? (
-        <div className="self-center col-start-2 col-end-13">
+        <div className="self-center col-start-5 col-end-12">
           <h1 className="text-white text-xl">Select your champion</h1>
         </div>
       ) : (
-        <div className="self-center col-start-2 col-end-5">
+        <div className="flex mx-2 self-center col-start-1 col-end-13">
           <img
             src={`https://raw.githubusercontent.com/InFinity54/LoL_DDragon/master/img/champion/loading/${champion}_0.jpg`}
             alt={`Champion: ${champion}`}
             height={450}
           />
+          {runes !== undefined && (
+            <div className="flex flex-wrap">
+              <div className="m-8">
+                <img src={`./imgs/perks/${runes.primaryStyleId}.png`} width={50} alt="" />
+              </div>
+              <div className="m-8">
+                <img src={`./imgs/perks/${runes.subStyleId}.png`} width={50} alt="" />
+              </div>
+              <div className="flex flex-wrap">
+                {runes.selectedPerkIds.map((rune) => (
+                  <div className="mx-8">
+                    <img src={`./imgs/perks/${rune}.png`} width={50} height={50} alt="" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -76,7 +76,7 @@ describe('<SelectFolder />', () => {
       </BrowserRouter>,
     );
 
-    const buttonInput = screen.getByRole('button', { name: 'Choose File' });
+    const buttonInput = screen.getByRole('button');
     expect(buttonInput).toBeInTheDocument();
   });
 
@@ -87,7 +87,7 @@ describe('<SelectFolder />', () => {
       </BrowserRouter>,
     );
 
-    const buttonInput = screen.getByRole('button', { name: 'Choose File' });
+    const buttonInput = screen.getByRole('button');
     fireEvent.click(buttonInput);
     expect(localStorage.getItem('Lockfile')).toBe('test');
   });
@@ -99,7 +99,7 @@ describe('<SelectFolder />', () => {
       </BrowserRouter>,
     );
 
-    const buttonInput = screen.getByRole('button', { name: 'Choose File' });
+    const buttonInput = screen.getByRole('button');
     fireEvent.click(buttonInput);
     const storage = localStorage.getItem('Lockfile') !== '' && localStorage.getItem('Lockfile') !== null;
     expect(storage).toBe(true);
@@ -112,7 +112,7 @@ describe('<SelectFolder />', () => {
       </BrowserRouter>,
     );
 
-    const buttonInput = screen.getByRole('button', { name: 'Choose File' });
+    const buttonInput = screen.getByRole('button');
     fireEvent.click(buttonInput);
     const storage = localStorage.getItem('lockfileData') !== '' && localStorage.getItem('lockfileData') !== null;
     expect(storage).toBe(true);
@@ -125,7 +125,7 @@ describe('<SelectFolder />', () => {
       </BrowserRouter>,
     );
 
-    const buttonInput = screen.getByRole('button', { name: 'Choose File' });
+    const buttonInput = screen.getByRole('button');
     fireEvent.click(buttonInput);
     await waitFor(() => {
       expect(mockNavigate).toBeCalledTimes(1);
@@ -139,21 +139,25 @@ describe('<SelectFolder />', () => {
       </BrowserRouter>,
     );
 
-    const buttonInput = screen.getByRole('button', { name: 'Choose File' });
+    const buttonInput = screen.getByRole('button');
     fireEvent.click(buttonInput);
     expect(mockNavigate).not.toBeCalled();
   });
 
-  it('button should to be clicked', () => {
+  it('button should to be clicked', async () => {
     render(
       <BrowserRouter>
-        <SelectFolder electron={mockElectronFalse} />
+        <SelectFolder electron={mockElectron} />
       </BrowserRouter>,
     );
 
-    const buttonInput = screen.getByRole('button', { name: 'Choose File' });
-    const click = fireEvent.click(buttonInput);
-    expect(click).toBe(true);
+    const buttonInput = screen.getByRole('button');
+    fireEvent.click(buttonInput);
+    fireEvent.click(buttonInput);
+
+    await waitFor(() => {
+      expect(mockNavigate).toBeCalledTimes(2);
+    });
   });
 
   it("'Lockfile' storage should to be empty", () => {
@@ -163,7 +167,7 @@ describe('<SelectFolder />', () => {
       </BrowserRouter>,
     );
 
-    const buttonInput = screen.getByRole('button', { name: 'Choose File' });
+    const buttonInput = screen.getByRole('button');
     fireEvent.click(buttonInput);
     const storage = localStorage.getItem('Lockfile') !== '' && localStorage.getItem('Lockfile') !== null;
     expect(storage).toBe(false);

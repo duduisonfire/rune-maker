@@ -9,6 +9,7 @@ export default function SelectFolder(props: { electron: IElectronApi }): JSX.Ele
   const electron = props.electron;
 
   async function getDir(e: MouseEvent) {
+    e.preventDefault();
     const file = document.getElementById('file-input') as HTMLElement;
     electron.getLeagueOfLegendsPath(file);
 
