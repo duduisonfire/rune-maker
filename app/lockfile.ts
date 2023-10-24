@@ -17,9 +17,13 @@ export class Lockfile {
   }
 
   openHandles() {
+    ipcMain.removeHandler('requestData');
+
     ipcMain.handle('requestData', () => {
       return { port: this.port, password: this.password };
     });
+
+    ipcMain.removeHandler('isOpen');
 
     ipcMain.handle('isOpen', () => {
       return fs.existsSync(this.path);
