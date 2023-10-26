@@ -91,6 +91,20 @@ class LeagueOfLegendsClientApi {
 
     return lane;
   }
+
+  getChampionId(match: IChampionSelectRequest) {
+    for (let index = 0; index < match.myTeam.length; index++) {
+      if (match.localPlayerCellId === match.myTeam[index].cellId) {
+        return match.myTeam[index].championId;
+      }
+    }
+
+    return 0;
+  }
+
+  // async getPlayer(id: number) {
+  //   return await this.LeagueOfLegendsClient.get(`/lol-champ-select/v1/summoners/${id}`);
+  // }
 }
 
 export default LeagueOfLegendsClientApi;
