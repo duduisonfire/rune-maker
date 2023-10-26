@@ -25,17 +25,14 @@ export default function InMatch(): JSX.Element {
         const res = await lolClientApi.inChampionSelect();
 
         const championSelectStage = res?.data as IChampionSelectRequest;
-        const player = championSelectStage.actions[0][0];
+        const championId = lolClientApi.getChampionId(championSelectStage);
         const lolVersion = await LeagueOfLegendsExternalApi.getLolVersion();
-        const championToSet = await LeagueOfLegendsExternalApi.getChampionName(
-          player.championId.toString(),
-          lolVersion,
-        );
+        const championName = await LeagueOfLegendsExternalApi.getChampionName(championId.toString(), lolVersion);
 
-        if (championToSet !== champion) {
+        if (championName !== champion) {
           setLane(lolClientApi.getLane(championSelectStage));
-          setChampion(championToSet);
-          const runes = await runePageApi.getChampionRunes(championToSet, lane);
+          setChampion(championName);
+          const runes = await runePageApi.getChampionRunes(championName, lane);
           const runePage = new RunePageToCreate(runes);
           setRunes(runePage);
 
