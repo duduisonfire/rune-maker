@@ -7,11 +7,12 @@ import { useNavigate } from 'react-router-dom';
 export default function Sidebar(): JSX.Element {
   const navigate = useNavigate();
 
-  function resetFolderLocation() {
+  function resetFolderPath() {
     localStorage.removeItem('Lockfile');
     localStorage.removeItem('lockfileData');
     navigate('/');
   }
+
   function openGithub() {
     window.open('https://github.com/duduisonfire/rune-maker');
   }
@@ -28,7 +29,7 @@ export default function Sidebar(): JSX.Element {
       <div
         title="Reset Folder"
         className="p-4 px-6 text-white mt-auto text-2xl hover:bg-opacity-70 hover:bg-gray-800 cursor-pointer"
-        onClick={resetFolderLocation}
+        onClick={resetFolderPath}
       >
         <FontAwesomeIcon icon={faRightFromBracket} />
       </div>
