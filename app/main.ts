@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import path from 'path';
 import { Lockfile } from './lockfile';
 
@@ -25,6 +25,9 @@ app.whenReady().then(() => {
   ipcMain.on('lockfile', lockfile.setFile);
   ipcMain.on('lockfileWatch', lockfile.watchFile);
   ipcMain.on('openHandles', lockfile.openHandles);
+  ipcMain.on('openGithub', () => {
+    shell.openExternal('https://github.com/duduisonfire/rune-maker');
+  });
   createWindow();
 
   app.on('activate', () => {

@@ -3,4 +3,5 @@ export default interface IElectronApi {
   setLeagueOfLegendsPath();
   getLockfileContent();
   clientIsOpen();
+  openGithub();
 }

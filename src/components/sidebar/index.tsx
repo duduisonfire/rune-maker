@@ -3,9 +3,11 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import ElectronApi from '../../libs/ElectronApi';
 
 export default function Sidebar(): JSX.Element {
   const navigate = useNavigate();
+  const electron = new ElectronApi();
 
   function resetFolderPath() {
     localStorage.removeItem('Lockfile');
@@ -14,7 +16,7 @@ export default function Sidebar(): JSX.Element {
   }
 
   function openGithub() {
-    window.open('https://github.com/duduisonfire/rune-maker');
+    electron.openGithub();
   }
 
   return (

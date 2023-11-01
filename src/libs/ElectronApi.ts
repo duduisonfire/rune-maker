@@ -11,25 +11,29 @@ export default class ElectronApi implements IElectronApi {
   }
 
   setLeagueOfLegendsPath() {
-    window.lockfile.setFile(localStorage.getItem('Lockfile'));
+    window.api.setFile(localStorage.getItem('Lockfile'));
   }
 
   async getLockfileContent() {
-    window.lockfile.watch();
-    const lockfileData = (await window.lockfile.requestData()) as ILockfileData;
+    window.api.watch();
+    const lockfileData = (await window.api.requestData()) as ILockfileData;
     return lockfileData;
   }
 
   async clientIsOpen() {
-    const isOpen = (await window.lockfile.isOpen()) as boolean;
+    const isOpen = (await window.api.isOpen()) as boolean;
     return isOpen;
   }
 
   watch() {
-    window.lockfile.watch();
+    window.api.watch();
   }
 
   openHandle() {
-    window.lockfile.openHandles();
+    window.api.openHandles();
+  }
+
+  openGithub() {
+    window.api.openGithub();
   }
 }
