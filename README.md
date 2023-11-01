@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/duduisonfire/rune-maker/master/repo-logo.png" alt="Logo" height=350>
+  <img src="https://raw.githubusercontent.com/duduisonfire/rune-maker/master/repo-logo.png" alt="Logo" height=200>
 </p>
 
 # Rune Maker
