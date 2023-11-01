@@ -14,7 +14,6 @@
     "build": "react-scripts build && tsc",
     "watch": "tsc -w",
     "start": "npx tailwindcss -i ./input.css -o ./public/style.css && react-scripts build && tsc && electron-forge start",
-    "start-debug": "npx tailwindcss -i ./input.css -o ./public/style.css && tsc && electron-forge start ",
     "package": "npx tailwindcss -i ./input.css -o ./public/style.css && react-scripts build && tsc && electron-forge package",
     "make": "npx tailwindcss -i ./input.css -o ./public/style.css && react-scripts build && tsc && electron-forge make",
     "tailwind": "npx tailwindcss -i ./input.css -o ./public/style.css --watch"
