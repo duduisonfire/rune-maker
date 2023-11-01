@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import IPLayerPosGameStats from '../../interfaces/IPlayerPosGameStats';
 import LeagueOfLegendsExternalApi from '../../libs/LeagueOfLegendsExternalApi';
 import ItemList from '../itemsList';
+import SummonerSpells from '../summonerSpells';
 import { MatchBoxContainer } from './styles/MatchBoxContainer';
 
 export default function MatchBox(props: { version: string; player: IPLayerPosGameStats }): JSX.Element {
@@ -11,6 +12,10 @@ export default function MatchBox(props: { version: string; player: IPLayerPosGam
   const resultTextColor = player.stats.win ? 'text-green-400' : 'text-red-400';
   const resultBorderColor = player.stats.win ? 'border-green-400' : 'border-red-400';
   const [champion, setChampion] = useState('');
+  const summonerSpells = {
+    firstSummonerSpell: player.spell1Id,
+    secondSummonerSpell: player.spell2Id,
+  };
 
   useEffect(() => {
     const getChampionName = async () => {
@@ -26,14 +31,15 @@ export default function MatchBox(props: { version: string; player: IPLayerPosGam
   });
 
   return (
-    <MatchBoxContainer title="matchbox-container" className={`${resultBorderColor}`}>
+    <MatchBoxContainer className={`${resultBorderColor}`}>
       <img
         src={`https://raw.githubusercontent.com/InFinity54/LoL_DDragon/master/latest/img/champion/${champion}.png`}
         alt="Champion"
-        className="m-2 col-start-1"
+        className="m-4 col-start-1"
         width={150}
         height={150}
       />
+      <SummonerSpells summonerSpells={summonerSpells} />
       <h1 className={`col-start-3 self-center ${resultTextColor}`}>{matchResult}</h1>
       <ItemList player={player} />
       <div className="m-2 self-center flex col-start-11">
