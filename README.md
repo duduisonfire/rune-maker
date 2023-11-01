@@ -7,7 +7,7 @@ welcome to use my app.
 # Photos
 <img src="https://imageupload.io/ib/5X5ryppsrl9dqhy_1698138530.png" alt="Select LoL Folder" width=500>
 <img src="https://imageupload.io/ib/CEYz9Jx04IkwUNJ_1698138530.png" alt="Client Closed" width=500>
-<img src="https://imageupload.io/ib/QZq97SgfisgqtvZ_1698138530.png" alt="Open Client" width=500>
+<img src="https://user-images.githubusercontent.com/37435869/279544064-36e7903a-6fe7-41b7-ac21-1a730c84218a.png" alt="Open Client" width=500>
 <img src="https://imageupload.io/ib/btEGtxINxZZMdXH_1698138529.png" alt="Select Champion" width=500>
 <img src="https://imageupload.io/ib/QHwoLjjqssMix2A_1698138530.png" alt="View champion and runes" width=500>
 
