@@ -3,7 +3,7 @@
 </p>
 
 # Rune Maker
-Hello, welcome to Rune Maker github page. Rune maker is an League of Legends assistant
+Hello, welcome to Rune Maker github page. Rune Maker is an League of Legends assistant
 to select your runes (and in the future, your builds) automatically. I developed this app
 to personal use, why in linux this app like are inexistent. So, if you use linux you are
 welcome to use my app.
