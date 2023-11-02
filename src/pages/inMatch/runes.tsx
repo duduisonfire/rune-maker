@@ -11,23 +11,26 @@ export function Runes({ runes }: { runes: ICreateRunePage }) {
   const primaryRuneData = data?.find((rune) => rune.id === primaryRune);
   const secondaryRuneData = data?.find((rune) => rune.id === secondaryRune);
 
-  const secondarySlots = [
-    [
-      { id: 5008, name: 'Adaptive Force' },
-      { id: 5005, name: 'Attack Speed' },
-      { id: 5007, name: 'Ability Haste' },
+  const secondarySlots = {
+    runes: [
+      [
+        { id: 5008, name: 'Adaptive Force' },
+        { id: 5005, name: 'Attack Speed' },
+        { id: 5007, name: 'Ability Haste' },
+      ],
+      [
+        { id: 5008, name: 'Adaptive Force' },
+        { id: 5002, name: 'Armor' },
+        { id: 5003, name: 'Magic Resist' },
+      ],
+      [
+        { id: 5001, name: 'Health Scaling' },
+        { id: 5002, name: 'Armor' },
+        { id: 5003, name: 'Magic Resist' },
+      ],
     ],
-    [
-      { id: 5008, name: 'Adaptive Force' },
-      { id: 5002, name: 'Armor' },
-      { id: 5003, name: 'Magic Resist' },
-    ],
-    [
-      { id: 5001, name: 'Health Scaling' },
-      { id: 5002, name: 'Armor' },
-      { id: 5003, name: 'Magic Resist' },
-    ],
-  ];
+  } as unknown as ISlot;
+
   const renderSlots = (slots: ISlot) => {
     if (!slots) return null;
     const treeRunes = slots.runes.map((rune: IRune) => {
@@ -39,24 +42,24 @@ export function Runes({ runes }: { runes: ICreateRunePage }) {
     return <div className={`flex py-2 `}>{treeRunes}</div>;
   };
 
-  const renderSecondarySlots = (slots: any) => {
+  const renderSecondarySlots = (slots: ISlot) => {
     const firstItem = runes.selectedPerkIds[6];
     const secondItem = runes.selectedPerkIds[7];
     const thirdItem = runes.selectedPerkIds[8];
 
-    const firstSlot = slots[0].map((rune: any) => {
+    const firstSlot = slots[0].map((rune: IRune) => {
       const firstSelectedRune = firstItem === rune.id;
       const style = firstSelectedRune ? 'border-2 border-amber-400 rounded-full mx-4' : 'filter grayscale';
       return <img className={style} src={`./imgs/perks/${rune.id}.png`} width={30} alt={rune.name} title={rune.name} />;
     });
 
-    const secondSlot = slots[1].map((rune: any) => {
+    const secondSlot = slots[1].map((rune: IRune) => {
       const secondSelectedRune = secondItem === rune.id;
       const style = secondSelectedRune ? 'border-2 border-amber-400 rounded-full mx-4' : 'filter grayscale';
       return <img className={style} src={`./imgs/perks/${rune.id}.png`} width={30} alt={rune.name} title={rune.name} />;
     });
 
-    const thirdSlot = slots[2].map((rune: any) => {
+    const thirdSlot = slots[2].map((rune: IRune) => {
       const thirdSelectedRune = thirdItem === rune.id;
       const style = thirdSelectedRune ? 'border-2 border-amber-400 rounded-full mx-4' : 'filter grayscale';
       return <img className={style} src={`./imgs/perks/${rune.id}.png`} width={30} alt={rune.name} title={rune.name} />;
