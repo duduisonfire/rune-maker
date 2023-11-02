@@ -4,7 +4,7 @@ import { useQuery } from 'react-query';
 import ICreateRunePage from '../../interfaces/ICreateRunePage';
 import { IAllRunes, ISlot, IRune } from '../../interfaces/IAllRunes';
 
-export function Runes({ runes }: { runes: ICreateRunePage }) {
+export default function Runes({ runes }: { runes: ICreateRunePage }) {
   const primaryRune = runes.primaryStyleId;
   const secondaryRune = runes.subStyleId;
   const { data } = useQuery('allRunes', LeagueOfLegendsExternalApi.getAllRunes);

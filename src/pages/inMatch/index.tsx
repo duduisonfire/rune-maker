@@ -8,7 +8,7 @@ import ILockfileData from '../../interfaces/ILockfileData';
 import GetRunesApi from '../../libs/GetRunesApi';
 import RunePageToCreate from '../../libs/RunePageToCreate';
 import ICreateRunePage from '../../interfaces/ICreateRunePage';
-import { Runes } from './runes';
+import Runes from '../../components/runes';
 
 export default function InMatch(): JSX.Element {
   const lockfile = JSON.parse(localStorage.getItem('lockfileData') as string) as ILockfileData;
