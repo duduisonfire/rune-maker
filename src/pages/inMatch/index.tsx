@@ -8,6 +8,7 @@ import ILockfileData from '../../interfaces/ILockfileData';
 import GetRunesApi from '../../libs/GetRunesApi';
 import RunePageToCreate from '../../libs/RunePageToCreate';
 import ICreateRunePage from '../../interfaces/ICreateRunePage';
+import { Runes } from './runes';
 
 export default function InMatch(): JSX.Element {
   const lockfile = JSON.parse(localStorage.getItem('lockfileData') as string) as ILockfileData;
@@ -75,23 +76,7 @@ export default function InMatch(): JSX.Element {
             alt={`Champion: ${champion}`}
             height={450}
           />
-          {runes !== undefined && (
-            <div className="flex flex-wrap">
-              <div className="m-8">
-                <img src={`./imgs/perks/${runes.primaryStyleId}.png`} width={50} alt="" />
-              </div>
-              <div className="m-8">
-                <img src={`./imgs/perks/${runes.subStyleId}.png`} width={50} alt="" />
-              </div>
-              <div className="flex flex-wrap">
-                {runes.selectedPerkIds.map((rune) => (
-                  <div className="mx-8">
-                    <img src={`./imgs/perks/${rune}.png`} width={50} height={50} alt="" />
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+          {runes !== undefined && <Runes runes={runes} />}
         </div>
       )}
     </div>

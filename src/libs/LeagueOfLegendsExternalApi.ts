@@ -1,5 +1,6 @@
 import axios from 'axios';
 import IChampionsObject from '../interfaces/IChampionsObject';
+import { IAllRunes } from '../interfaces/IAllRunes';
 
 export default abstract class LeagueOfLegendsExternalApi {
   static async getLolVersion() {
@@ -22,5 +23,15 @@ export default abstract class LeagueOfLegendsExternalApi {
     });
 
     return selectedChampion;
+  }
+
+  static async getAllRunes() {
+    const lolVersion = await LeagueOfLegendsExternalApi.getLolVersion();
+    console.log('lolVersion', lolVersion);
+    const response = await axios.get(
+      `http://ddragon.leagueoflegends.com/cdn/${lolVersion}/data/en_US/runesReforged.json`,
+    );
+    const responseData = response.data as IAllRunes[];
+    return responseData;
   }
 }
