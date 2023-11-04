@@ -6,7 +6,7 @@ import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import MatchBox from '.';
-import IPLayerPosGameStats from '../../interfaces/IPlayerPosGameStats';
+import IPlayerPosGameStats from '../../interfaces/IPlayerPosGameStats';
 
 const player = {
   championId: 266,
@@ -16,7 +16,7 @@ const player = {
     deaths: 3,
     assists: 12,
   },
-} as unknown as IPLayerPosGameStats;
+} as unknown as IPlayerPosGameStats;
 
 const playerLose = {
   championId: 266,
@@ -26,67 +26,59 @@ const playerLose = {
     deaths: 3,
     assists: 12,
   },
-} as unknown as IPLayerPosGameStats;
+} as unknown as IPlayerPosGameStats;
+
+const props = {
+  version: '13.7.1',
+  player: player,
+  gameMode: 'NEXUSBLITZ',
+  gameDuration: 120,
+  gameDate: '2021-01-01',
+};
+
+const propsLose = {
+  version: '13.7.1',
+  player: playerLose,
+  gameMode: 'NEXUSBLITZ',
+  gameDuration: 120,
+  gameDate: '2021-01-01',
+};
 
 describe('<MatchBox />', () => {
-  it('should be render a matchbox with border color green', () => {
-    render(<MatchBox version="13.7.1" player={player} />);
+  it('Render a matchbox win', () => {
+    render(<MatchBox {...props} />);
 
-    const matchBox = screen.getByTitle('matchbox-container');
-    expect(matchBox.classList.contains('border-green-400')).toBe(true);
-  });
-
-  it('should be render a matchbox with VICTORY text', () => {
-    render(<MatchBox version="13.7.1" player={player} />);
-
+    const matchBox = screen.getByTestId('matchbox-container');
     const matchBoxResult = screen.getByRole('heading', { name: 'VICTORY' });
+
+    expect(matchBox.classList.contains('bg-[#1E2B5E]')).toBe(true);
     expect(matchBoxResult).toBeInTheDocument();
   });
+  it('Render a matchbox loss', () => {
+    render(<MatchBox {...propsLose} />);
 
-  it('should be render a matchbox with border red green', () => {
-    render(<MatchBox version="13.7.1" player={playerLose} />);
-
-    const matchBox = screen.getByTitle('matchbox-container');
-    expect(matchBox.classList.contains('border-red-400')).toBe(true);
-  });
-
-  it('should be render a matchbox with DEFEAT text', () => {
-    render(<MatchBox version="13.7.1" player={playerLose} />);
-
+    const matchBox = screen.getByTestId('matchbox-container');
     const matchBoxResult = screen.getByRole('heading', { name: 'DEFEAT' });
+
+    expect(matchBox.classList.contains('bg-[#3E223B]')).toBe(true);
     expect(matchBoxResult).toBeInTheDocument();
   });
 
-  it('should be render a matchbox with 10 kills', () => {
-    render(<MatchBox version="13.7.1" player={player} />);
+  it('Render player stats', () => {
+    render(<MatchBox {...props} />);
 
     const matchBoxKills = screen.getByRole('heading', { name: '10' });
     expect(matchBoxKills).toBeInTheDocument();
-  });
-
-  it('should be render a matchbox with 3 deaths', () => {
-    render(<MatchBox version="13.7.1" player={player} />);
-
-    const matchBoxDeaths = screen.getByRole('heading', { name: '3' });
-    expect(matchBoxDeaths).toBeInTheDocument();
-  });
-
-  it('should be render a matchbox with 12 assists', () => {
-    render(<MatchBox version="13.7.1" player={player} />);
 
     const matchBoxAssists = screen.getByRole('heading', { name: '12' });
     expect(matchBoxAssists).toBeInTheDocument();
-  });
-
-  it('should be render a matchbox with deaths text color red', () => {
-    render(<MatchBox version="13.7.1" player={player} />);
 
     const matchBoxDeaths = screen.getByRole('heading', { name: '3' });
     expect(matchBoxDeaths.classList.contains('text-red-600')).toBe(true);
   });
 
   it('should be render a matchbox with correctly champion photo', async () => {
-    render(<MatchBox version="13.7.1" player={player} />);
+    render(<MatchBox {...props} />);
 
     await waitFor(() => {
       const matchBoxChampionPhoto = screen.getByRole('img', { name: 'Champion' });

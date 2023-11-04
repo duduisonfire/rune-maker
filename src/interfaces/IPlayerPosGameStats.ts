@@ -1,4 +1,4 @@
-export default interface IPLayerPosGameStats {
+export default interface IPlayerPosGameStats {
   [index: string]: number | string | boolean | object;
   championId: number;
   highestAchievedSeasonTier: string;
