@@ -12,7 +12,7 @@ welcome to use my app.
 <p align="center">
   <img src="https://imageupload.io/ib/5X5ryppsrl9dqhy_1698138530.png" alt="Select LoL Folder" width=400>
   <img src="https://imageupload.io/ib/CEYz9Jx04IkwUNJ_1698138530.png" alt="Client Closed" width=400>
-  <img src="https://user-images.githubusercontent.com/37435869/279544064-36e7903a-6fe7-41b7-ac21-1a730c84218a.png" alt="Open Client" width=400>
+  <img src="https://i.ibb.co/0VSpgNv/Screenshot-from-2023-11-05-16-36-07.png" alt="Open Client" width=400>
   <img src="https://imageupload.io/ib/btEGtxINxZZMdXH_1698138529.png" alt="Select Champion" width=400>
   <img src="https://user-images.githubusercontent.com/37435869/279866860-076fd1ba-1b23-46d1-b5da-770d2668309e.png" alt="View champion and runes" width=400>
 </p>
