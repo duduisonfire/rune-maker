@@ -1,31 +1,53 @@
 import React from 'react';
-import IPLayerPosGameStats from '../../interfaces/IPlayerPosGameStats';
+import IPlayerPosGameStats from '../../interfaces/IPlayerPosGameStats';
 import IPlayerStatus from '../../interfaces/IPlayerStats';
 
-export default function ItemList(props: { player: IPLayerPosGameStats }): JSX.Element {
-  const player = props.player;
+type Props = {
+  player: IPlayerPosGameStats;
+};
+
+export default function ItemList({ player }: Props): JSX.Element {
   const item: string[] = [];
+  const blankItem = '7050';
   const playerStats = player.stats as IPlayerStatus;
 
   for (let index = 0; index < 7; index++) {
     const itemId = `item${index}`;
     if (playerStats[itemId] === 0) {
-      item.push('7050');
+      item.push(blankItem);
     } else {
       item.push(`${playerStats[`item${index}`]}`);
     }
   }
 
+  const itemImage = (item: string): string => {
+    return `https://raw.githubusercontent.com/InFinity54/LoL_DDragon/master/latest/img/item/${item}.png`;
+  };
+
   return (
-    <div className="m-2 self-center flex col-start-4">
-      {item.map((item: string, index) => (
-        <img
-          key={index}
-          className="border-x border-y border-amber-400 mx-1"
-          src={`https://raw.githubusercontent.com/InFinity54/LoL_DDragon/master/latest/img/item/${item}.png`}
-          alt="Item"
-        />
-      ))}
+    <div className="grid my-2 grid-cols-4 col-start-5 col-end-8 gap-[2px] ">
+      <div className="...">
+        <img src={itemImage(item[0])} alt="Item" />
+      </div>
+      <div className="...">
+        <img src={itemImage(item[1])} alt="Item" />
+      </div>
+      <div className="...">
+        <img src={itemImage(item[2])} alt="Item" />
+      </div>
+      <div className="...">
+        <img src={itemImage(item[6])} alt="Item" />
+      </div>
+      <div className="...">
+        <img src={itemImage(item[3])} alt="Item" />
+      </div>
+      <div className="...">
+        <img src={itemImage(item[4])} alt="Item" />
+      </div>
+      <div className="...">
+        <img src={itemImage(item[5])} alt="Item" />
+      </div>
+      <div className="..." />
     </div>
   );
 }
