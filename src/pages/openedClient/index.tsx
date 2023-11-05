@@ -55,6 +55,7 @@ export default function OpenedClient(): JSX.Element {
     if (res1.status === 'error') navigate('/closed');
     if (res2.status === 'success') navigate('/inmatch');
   };
+  console.log('matchData', matchesData);
 
   QueryMultiple();
 
@@ -69,7 +70,13 @@ export default function OpenedClient(): JSX.Element {
         {matchesData.accountId && (
           <div>
             {matchesData.games.games.map((match: IGameData) => (
-              <MatchBox version={version} player={match.participants[0]} />
+              <MatchBox
+                version={version}
+                player={match.participants[0]}
+                gameDuration={match.gameDuration}
+                gameMode={match.gameMode}
+                gameDate={match.gameCreationDate}
+              />
             ))}
           </div>
         )}

@@ -5,7 +5,7 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import ItemList from '.';
-import IPLayerPosGameStats from '../../interfaces/IPlayerPosGameStats';
+import IPlayerPosGameStats from '../../interfaces/IPlayerPosGameStats';
 import React from 'react';
 
 const player = {
@@ -18,7 +18,7 @@ const player = {
     item5: 7050,
     item6: 7050,
   },
-} as unknown as IPLayerPosGameStats;
+} as unknown as IPlayerPosGameStats;
 
 describe('<ItemList />', () => {
   it('should be render an item list with your photos', () => {
