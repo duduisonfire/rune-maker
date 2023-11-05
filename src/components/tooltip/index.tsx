@@ -26,7 +26,7 @@ export default function Tooltip({ children, tooltip }: Props) {
       {children}
       {tooltip && (
         <span
-          className="inivisible group-hover:visible opacity-0 group-hover:opacity-100 bg-gray-500 text-white rounded absolute top-full mt-2 whitespace-nowrap"
+          className="invisible group-hover:visible opacity-0 group-hover:opacity-100 bg-gray-500 text-white rounded absolute top-full mt-2 whitespace-nowrap"
           ref={tooltipRef}
         >
           {tooltip}
