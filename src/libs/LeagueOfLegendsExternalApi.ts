@@ -21,7 +21,6 @@ export default abstract class LeagueOfLegendsExternalApi {
 
   static async getAllRunes() {
     const lolVersion = await LeagueOfLegendsExternalApi.getLolVersion();
-    console.log('lolVersion', lolVersion);
     const response = await axios.get(
       `http://ddragon.leagueoflegends.com/cdn/${lolVersion}/data/en_US/runesReforged.json`,
     );

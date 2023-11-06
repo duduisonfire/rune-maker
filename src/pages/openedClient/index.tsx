@@ -46,6 +46,7 @@ export default function OpenedClient(): JSX.Element {
     },
   });
 
+
   useQuery({
     queryKey: ['lolVersion'],
     queryFn: async () => {
@@ -97,7 +98,13 @@ export default function OpenedClient(): JSX.Element {
         {matchesData.accountId && (
           <div>
             {matchesData.games.games.map((match: IGameData) => (
-              <MatchBox version={version} player={match.participants[0]} />
+              <MatchBox
+                version={version}
+                player={match.participants[0]}
+                gameDuration={match.gameDuration}
+                gameMode={match.gameMode}
+                gameDate={match.gameCreationDate}
+              />
             ))}
           </div>
         )}
