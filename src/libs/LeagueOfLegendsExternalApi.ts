@@ -10,19 +10,13 @@ export default abstract class LeagueOfLegendsExternalApi {
     return version;
   }
 
-  static async getChampionName(champId: string, lolVersion: string) {
+  static async getAllChampions() {
+    const lolVersion = await LeagueOfLegendsExternalApi.getLolVersion();
     const response = await axios.get(`https://ddragon.leagueoflegends.com/cdn/${lolVersion}/data/en_US/champion.json`);
     const championsObject = response.data.data as IChampionsObject;
-    const championList = Object.keys(championsObject);
-    let selectedChampion = '';
+    const championList = Object.values(championsObject);
 
-    championList.forEach((champion) => {
-      if ((championsObject[champion].key as string) === champId) {
-        selectedChampion = champion;
-      }
-    });
-
-    return selectedChampion;
+    return championList;
   }
 
   static async getAllRunes() {
@@ -31,6 +25,13 @@ export default abstract class LeagueOfLegendsExternalApi {
       `http://ddragon.leagueoflegends.com/cdn/${lolVersion}/data/en_US/runesReforged.json`,
     );
     const responseData = response.data as IAllRunes[];
+    return responseData;
+  }
+
+  static async getAllItems() {
+    const lolVersion = await LeagueOfLegendsExternalApi.getLolVersion();
+    const response = await axios.get(`http://ddragon.leagueoflegends.com/cdn/${lolVersion}/data/en_US/item.json`);
+    const responseData = response.data.data;
     return responseData;
   }
 }

@@ -8,29 +8,21 @@ type Props = {
   tooltip?: string;
 };
 
-export default function Tooltip({ children, tooltip }: Props) {
-  const tooltipRef = useRef<HTMLSpanElement | null>(null);
+export default function Tooltip({ children, tooltip = '' }: Props) {
+  const tooltipRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  return (
-    <div
-      ref={containerRef}
-      className="group relative inline-block"
-      onMouseEnter={({ clientX }) => {
-        if (!tooltipRef.current || !containerRef.current) return;
-        const { left } = tooltipRef.current.getBoundingClientRect();
+  const cleanedUpTooltip = tooltip.replace(/\n/g, '<br />');
 
-        tooltipRef.current.style.left = clientX - left + 'px';
-      }}
-    >
+  return (
+    <div ref={containerRef} className="group relative">
       {children}
       {tooltip && (
-        <span
-          className="invisible group-hover:visible opacity-0 group-hover:opacity-100 bg-gray-500 text-white rounded absolute top-full mt-2 whitespace-nowrap"
+        <div
+          className="hidden w-[300px] p-4 bg-[#070720] absolute text-white top-0 left-full transform -translate-x-3/3 group-hover:block  z-10 text-[10px]"
           ref={tooltipRef}
-        >
-          {tooltip}
-        </span>
+          dangerouslySetInnerHTML={{ __html: cleanedUpTooltip }}
+        ></div>
       )}
     </div>
   );

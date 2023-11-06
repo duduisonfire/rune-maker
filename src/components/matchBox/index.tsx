@@ -1,45 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import IPlayerPosGameStats from '../../interfaces/IPlayerPosGameStats';
-import LeagueOfLegendsExternalApi from '../../libs/LeagueOfLegendsExternalApi';
+
 import ItemList from '../itemsList';
 import SummonerSpells from '../summonerSpells';
 import { MatchBoxContainer } from './styles/MatchBoxContainer';
 import GameInfo from '../gameInfo';
 import PlayerStats from '../playerStats';
+import IChampions from '../../interfaces/IChampions';
 
 type Props = {
-  version: string;
   player: IPlayerPosGameStats;
   gameMode: string;
   gameDuration: number;
   gameDate: string;
 };
 
-export default function MatchBox({ version, player, gameMode, gameDuration, gameDate }: Props): JSX.Element {
+export default function MatchBox({ player, gameMode, gameDuration, gameDate }: Props): JSX.Element {
+  const allChampions = JSON.parse(localStorage.getItem('allChampions') as string) as IChampions[];
   const resultBgColor = player.stats.win ? 'bg-[#1E2B5E] hover:bg-[#1C234B]' : 'bg-[#3E223B] hover:bg-[#311F3A]';
-  const [champion, setChampion] = useState('');
+
   const summonerSpells = {
     firstSummonerSpell: player.spell1Id,
     secondSummonerSpell: player.spell2Id,
   };
 
-  useEffect(() => {
-    const getChampionName = async () => {
-      const championNameResponse = await LeagueOfLegendsExternalApi.getChampionName(
-        player.championId.toString(),
-        version,
-      );
-
-      setChampion(championNameResponse);
-    };
-
-    getChampionName();
-  });
+  const championId = player.championId.toString();
+  const championName = allChampions.find((champion) => champion.key === championId)?.id;
 
   return (
     <MatchBoxContainer data-testid="matchbox-container" className={`${resultBgColor}`}>
       <img
-        src={`https://raw.githubusercontent.com/InFinity54/LoL_DDragon/master/latest/img/champion/${champion}.png`}
+        src={`https://raw.githubusercontent.com/InFinity54/LoL_DDragon/master/latest/img/champion/${championName}.png`}
         alt="Champion"
         className="m-4 col-start-1 "
         width={150}

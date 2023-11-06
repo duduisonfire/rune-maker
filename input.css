@@ -14,5 +14,29 @@
   border-radius: 20px;
 }
 
+itemName {
+   color: #60a5fa;
+   padding-bottom: 2rem;
+   font-weight: bold;
+}
+
+mainText: {
+  font-family: 'Roboto';
+}
+
+stats {
+  padding-bottom: 2rem;
+  font-weight: bold;
+}
+
+li {
+  list-style-type: none;
+}
+
+passive {
+  color: #d97706;
+  font-weight: bold;
+}
+
 @tailwind components;
 @tailwind utilities;
