@@ -1,41 +1,41 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { Container } from './styles/container';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import ElectronApi from '../../libs/ElectronApi';
 import LeagueOfLegendsClientApi from '../../libs/LeagueOfLegendsClientApi';
 
 export default function ClosedClient(): JSX.Element {
+  const queryClient = useQueryClient();
+  const [clientIsOpen, setClientIsOpen] = useState(false);
+  const [create, setCreate] = useState<LeagueOfLegendsClientApi | null>(null);
   const navigate = useNavigate();
   const electron = new ElectronApi();
 
-  const { data } = useQuery({
-    queryKey: ['isClosed'],
+  useQuery({
+    queryKey: ['lockfile'],
     queryFn: async () => {
-      const res = await electron.clientIsOpen();
-      return res;
+      await electron.clientIsOpen();
+      const lockfile = await electron.getLockfileContent();
+      localStorage.setItem('lockfileData', JSON.stringify(lockfile));
+      const lolClient = LeagueOfLegendsClientApi.create(lockfile);
+      setCreate(lolClient);
     },
-    refetchInterval: 500,
   });
 
-  useEffect(() => {
-    const clientIsOpenListener = async () => {
-      if (data) {
-        const lockfileData = await electron.getLockfileContent();
-        localStorage.setItem('lockfileData', JSON.stringify(lockfileData));
-        const lolClient = LeagueOfLegendsClientApi.create(lockfileData);
-        const clientIsTrulyOpened = await lolClient.handshakeRequest();
-
-        if (clientIsTrulyOpened) {
-          window.setTimeout(() => {
-            navigate('/open');
-          }, 1000);
-        }
+  useQuery({
+    queryKey: ['clientIsOpen', create],
+    queryFn: async () => {
+      if (create) {
+        const handshake = await create.handshakeRequest();
+        setClientIsOpen(handshake);
       }
-    };
-
-    clientIsOpenListener();
+    },
+    refetchInterval: clientIsOpen ? false : 1000,
   });
+
+  if (clientIsOpen) navigate('/open');
+  if (!clientIsOpen) queryClient.invalidateQueries(['lockfile', 'clientIsOpen', create]);
 
   return (
     <Container>

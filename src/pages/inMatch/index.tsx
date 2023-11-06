@@ -3,15 +3,16 @@ import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import IChampionSelectRequest from '../../interfaces/IChampionSelectRequest';
 import LeagueOfLegendsClientApi from '../../libs/LeagueOfLegendsClientApi';
-import LeagueOfLegendsExternalApi from '../../libs/LeagueOfLegendsExternalApi';
 import ILockfileData from '../../interfaces/ILockfileData';
 import GetRunesApi from '../../libs/GetRunesApi';
 import RunePageToCreate from '../../libs/RunePageToCreate';
 import ICreateRunePage from '../../interfaces/ICreateRunePage';
 import Runes from '../../components/runes';
+import IChampions from '../../interfaces/IChampions';
 
 export default function InMatch(): JSX.Element {
   const lockfile = JSON.parse(localStorage.getItem('lockfileData') as string) as ILockfileData;
+  const allChampions = JSON.parse(localStorage.getItem('allChampions') as string) as IChampions[];
   const navigate = useNavigate();
   const [champion, setChampion] = useState('');
   const [lane, setLane] = useState('');
@@ -26,9 +27,8 @@ export default function InMatch(): JSX.Element {
         const res = await lolClientApi.inChampionSelect();
 
         const championSelectStage = res?.data as IChampionSelectRequest;
-        const championId = lolClientApi.getChampionId(championSelectStage);
-        const lolVersion = await LeagueOfLegendsExternalApi.getLolVersion();
-        const championName = await LeagueOfLegendsExternalApi.getChampionName(championId.toString(), lolVersion);
+        const championId = lolClientApi.getChampionId(championSelectStage).toString();
+        const championName = allChampions.find((champion) => champion.key === championId)?.id ?? '';
 
         if (championName !== champion) {
           setLane(lolClientApi.getLane(championSelectStage));
