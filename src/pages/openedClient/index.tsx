@@ -7,10 +7,11 @@ import MatchBox from '../../components/matchBox';
 import IMatchesData from '../../interfaces/IMatchesData';
 import IGameData from '../../interfaces/IGameData';
 import LeagueOfLegendsExternalApi from '../../libs/LeagueOfLegendsExternalApi';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import ILockfileData from '../../interfaces/ILockfileData';
 
 export default function OpenedClient(): JSX.Element {
+  const queryClient = useQueryClient();
   const lockfile = JSON.parse(localStorage.getItem('lockfileData') as string) as ILockfileData;
   const navigate = useNavigate();
   const [version, setVersion] = useState('');
@@ -20,43 +21,70 @@ export default function OpenedClient(): JSX.Element {
   const summonerNameElement: RefObject<HTMLDivElement> = createRef();
   const matchesElement: RefObject<HTMLDivElement> = createRef();
 
-  const QueryMultiple = () => {
-    const res1 = useQuery({
-      queryKey: ['isClosed'],
-      queryFn: async () => {
-        const res = await lolClientApi.requestSummonerData();
-        return res;
-      },
-      refetchInterval: 400,
-    });
-    const res2 = useQuery({
-      queryKey: ['inMatch'],
-      queryFn: async () => {
-        const res = await lolClientApi.inChampionSelect();
-        return res.data;
-      },
-      refetchInterval: 500,
-    });
-    useQuery({
-      queryKey: ['firstRender'],
-      queryFn: async () => {
-        const res = await lolClientApi.requestSummonerData();
-        const lolVersionToSet = await LeagueOfLegendsExternalApi.getLolVersion();
-        setVersion(lolVersionToSet);
-        const summonerDataResponse = await lolClientApi.requestSummonerData();
-        setSummonerData(summonerDataResponse);
-        const matchData = await lolClientApi.requestMatchesData();
-        setMatchesData(matchData);
+  useQuery({
+    queryKey: ['clientClosed'],
+    queryFn: async () => {
+      await lolClientApi.requestSummonerData();
+    },
+    onError: () => {
+      queryClient.invalidateQueries(['clientIsOpen', 'lockfile']);
+      navigate('/closed');
+    },
+    refetchInterval: 10000,
+  });
 
-        return res;
-      },
-    });
+  useQuery({
+    queryKey: ['inMatch'],
+    queryFn: async () => {
+      const res = await lolClientApi.inChampionSelect();
+      return res.data;
+    },
+    refetchInterval: 500,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['matchData']);
+      navigate('/inmatch');
+    },
+  });
 
-    if (res1.status === 'error') navigate('/closed');
-    if (res2.status === 'success') navigate('/inmatch');
-  };
+  useQuery({
+    queryKey: ['lolVersion'],
+    queryFn: async () => {
+      const lolVersionToSet = await LeagueOfLegendsExternalApi.getLolVersion();
+      setVersion(lolVersionToSet);
+    },
+  });
 
-  QueryMultiple();
+  useQuery({
+    queryKey: ['matchData'],
+    queryFn: async () => {
+      const matchData = await lolClientApi.requestMatchesData();
+      setMatchesData(matchData);
+    },
+  });
+
+  useQuery({
+    queryKey: ['allChampions', { version }],
+    queryFn: async () => {
+      const champions = await LeagueOfLegendsExternalApi.getAllChampions();
+      localStorage.setItem('allChampions', JSON.stringify(champions));
+    },
+  });
+
+  useQuery({
+    queryKey: ['allItems', { version }],
+    queryFn: async () => {
+      const items = await LeagueOfLegendsExternalApi.getAllItems();
+      localStorage.setItem('allItems', JSON.stringify(items));
+    },
+  });
+
+  useQuery({
+    queryKey: ['summonerData'],
+    queryFn: async () => {
+      const summonerData = await lolClientApi.requestSummonerData();
+      setSummonerData(summonerData);
+    },
+  });
 
   return (
     <MatchesContainer>

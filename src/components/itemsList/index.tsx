@@ -1,31 +1,77 @@
 import React from 'react';
 import IPLayerPosGameStats from '../../interfaces/IPlayerPosGameStats';
 import IPlayerStatus from '../../interfaces/IPlayerStats';
+import Tooltip from '../tooltip/';
 
 export default function ItemList(props: { player: IPLayerPosGameStats }): JSX.Element {
   const player = props.player;
   const item: string[] = [];
+  const tooltipItem: string[] = [];
+  const blankItem = '7050';
   const playerStats = player.stats as IPlayerStatus;
+  const allItems = JSON.parse(localStorage.getItem('allItems') as string);
 
   for (let index = 0; index < 7; index++) {
     const itemId = `item${index}`;
     if (playerStats[itemId] === 0) {
       item.push('7050');
-    } else {
-      item.push(`${playerStats[`item${index}`]}`);
+      const itemIndex = `item${index}`;
+      const itemId = playerStats[itemIndex];
+      if (itemId === 0) {
+        item.push(blankItem);
+        tooltipItem.push('');
+      } else {
+        item.push(`${playerStats[`item${index}`]}`);
+        tooltipItem.push(
+          `<itemName>${allItems[Number(itemId)].name}</itemName> <br />${allItems[Number(itemId)].description}`,
+        );
+      }
     }
   }
 
+  const itemImage = (item: string): string => {
+    return `https://raw.githubusercontent.com/InFinity54/LoL_DDragon/master/latest/img/item/${item}.png`;
+  };
+
   return (
-    <div className="m-2 self-center flex col-start-4">
-      {item.map((item: string, index) => (
-        <img
-          key={index}
-          className="border-x border-y border-amber-400 mx-1"
-          src={`https://raw.githubusercontent.com/InFinity54/LoL_DDragon/master/latest/img/item/${item}.png`}
-          alt="Item"
-        />
-      ))}
+    <div className="grid my-2 grid-cols-4 col-start-5 col-end-8 gap-[2px] ">
+      <Tooltip tooltip={tooltipItem[0]}>
+        <div className="...">
+          <img src={itemImage(item[0])} alt="Item" />
+        </div>
+      </Tooltip>
+      <Tooltip tooltip={tooltipItem[1]}>
+        <div className="...">
+          <img src={itemImage(item[1])} alt="Item" />
+        </div>
+      </Tooltip>
+      <Tooltip tooltip={tooltipItem[2]}>
+        <div className="...">
+          <img src={itemImage(item[2])} alt="Item" />
+        </div>
+      </Tooltip>
+      <Tooltip tooltip={tooltipItem[6]}>
+        <div className="...">
+          <img src={itemImage(item[6])} alt="Item" />
+        </div>
+      </Tooltip>
+      <Tooltip tooltip={tooltipItem[3]}>
+        <div className="...">
+          <img src={itemImage(item[3])} alt="Item" />
+        </div>
+      </Tooltip>
+      <Tooltip tooltip={tooltipItem[4]}>
+        <div className="...">
+          <img src={itemImage(item[4])} alt="Item" />
+        </div>
+      </Tooltip>
+      <Tooltip tooltip={tooltipItem[5]}>
+        <div className="...">
+          <img src={itemImage(item[5])} alt="Item" />
+        </div>
+      </Tooltip>
+      <div className="..." />
     </div>
   );
+}
 }

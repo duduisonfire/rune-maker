@@ -1,39 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import IPLayerPosGameStats from '../../interfaces/IPlayerPosGameStats';
-import LeagueOfLegendsExternalApi from '../../libs/LeagueOfLegendsExternalApi';
+import React from 'react';
+import IPlayerPosGameStats from '../../interfaces/IPlayerPosGameStats';
 import ItemList from '../itemsList';
 import SummonerSpells from '../summonerSpells';
 import { MatchBoxContainer } from './styles/MatchBoxContainer';
+import GameInfo from '../gameInfo';
+import PlayerStats from '../playerStats';
+import IChampions from '../../interfaces/IChampions';
 
-export default function MatchBox(props: { version: string; player: IPLayerPosGameStats }): JSX.Element {
-  const version = props.version;
-  const player = props.player;
+type Props = {
+  player: IPlayerPosGameStats;
+  gameMode: string;
+  gameDuration: number;
+  gameDate: string;
+};
+
+export default function MatchBox({ player, gameMode, gameDuration, gameDate }: Props): JSX.Element {
   const matchResult = player.stats.win ? 'VICTORY' : 'DEFEAT';
   const resultTextColor = player.stats.win ? 'text-green-400' : 'text-red-400';
-  const resultBorderColor = player.stats.win ? 'border-green-400' : 'border-red-400';
-  const [champion, setChampion] = useState('');
+  const allChampions = JSON.parse(localStorage.getItem('allChampions') as string) as IChampions[];
+  const resultBgColor = player.stats.win ? 'bg-[#1E2B5E] hover:bg-[#1C234B]' : 'bg-[#3E223B] hover:bg-[#311F3A]';
   const summonerSpells = {
     firstSummonerSpell: player.spell1Id,
     secondSummonerSpell: player.spell2Id,
   };
 
-  useEffect(() => {
-    const getChampionName = async () => {
-      const championNameResponse = await LeagueOfLegendsExternalApi.getChampionName(
-        player.championId.toString(),
-        version,
-      );
-
-      setChampion(championNameResponse);
-    };
-
-    getChampionName();
-  });
+  const championId = player.championId.toString();
+  const championName = allChampions.find((champion) => champion.key === championId)?.id;
 
   return (
-    <MatchBoxContainer className={`${resultBorderColor}`}>
+    <MatchBoxContainer className={`${resultBgColor}`}>
       <img
-        src={`https://raw.githubusercontent.com/InFinity54/LoL_DDragon/master/latest/img/champion/${champion}.png`}
+        src={`https://raw.githubusercontent.com/InFinity54/LoL_DDragon/master/latest/img/champion/${championName}.png`}
         alt="Champion"
         className="m-4 col-start-1"
         width={150}
