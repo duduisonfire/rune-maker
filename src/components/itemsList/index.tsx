@@ -15,24 +15,16 @@ export default function ItemList({ player }: Props): JSX.Element {
   const allItems = JSON.parse(localStorage.getItem('allItems') as string);
 
   for (let index = 0; index < 7; index++) {
-    const itemId = `item${index}`;
-    if (playerStats[itemId] === 0) {
-
-      item.push('7050');
-      const itemIndex = `item${index}`;
-      const itemId = playerStats[itemIndex];
-      if (itemId === 0) {
-        item.push(blankItem);
-        tooltipItem.push('');
-      } else {
-        item.push(`${playerStats[`item${index}`]}`);
-        tooltipItem.push(
-          `<itemName>${allItems[Number(itemId)].name}</itemName> <br />${allItems[Number(itemId)].description}`,
-        );
-      }
+    const itemIndex = `item${index}`;
+    const itemId = playerStats[itemIndex];
+    if (itemId === 0) {
       item.push(blankItem);
+      tooltipItem.push('');
     } else {
       item.push(`${playerStats[`item${index}`]}`);
+      tooltipItem.push(
+        `<itemName>${allItems[Number(itemId)].name}</itemName> <br />${allItems[Number(itemId)].description}`,
+      );
     }
   }
 
@@ -42,7 +34,6 @@ export default function ItemList({ player }: Props): JSX.Element {
 
   return (
     <div className="grid my-2 grid-cols-4 col-start-5 col-end-8 gap-[2px] ">
-
       <Tooltip tooltip={tooltipItem[0]}>
         <div className="...">
           <img src={itemImage(item[0])} alt="Item" />
@@ -78,9 +69,8 @@ export default function ItemList({ player }: Props): JSX.Element {
           <img src={itemImage(item[5])} alt="Item" />
         </div>
       </Tooltip>
-      
+
       <div className="..." />
     </div>
   );
-}
 }
