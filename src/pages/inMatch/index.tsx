@@ -34,7 +34,7 @@ export default function InMatch(): JSX.Element {
           setLane(lolClientApi.getLane(championSelectStage));
           setChampion(championName);
           const runes = await runePageApi.getChampionRunes(championName, lane);
-          const runePage = new RunePageToCreate(runes);
+          const runePage = new RunePageToCreate(runes, 0);
           setRunes(runePage);
 
           let successInGetRunePage = false;

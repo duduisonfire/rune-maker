@@ -8,11 +8,11 @@ export default class RunePageToCreate implements ICreateRunePage {
   selectedPerkIds: number[];
   current: boolean;
 
-  constructor(runes: IRunePage) {
+  constructor(runes: IRunePage, index: number) {
     this.name = runes.champion;
-    this.primaryStyleId = runes.runesId.primaryStyleId;
-    this.subStyleId = runes.runesId.subStyleId;
-    this.selectedPerkIds = runes.runesId.selectedPerkIds;
+    this.primaryStyleId = runes.runesId[index].primaryStyleId;
+    this.subStyleId = runes.runesId[index].subStyleId;
+    this.selectedPerkIds = runes.runesId[index].selectedPerkIds;
     this.current = true;
   }
 }
