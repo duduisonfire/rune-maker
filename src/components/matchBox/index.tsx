@@ -17,6 +17,7 @@ type Props = {
 
 export default function MatchBox({ player, gameMode, gameDuration, gameDate }: Props): JSX.Element {
   const allChampions = JSON.parse(localStorage.getItem('allChampions') as string) as IChampions[];
+
   const resultBgColor = player.stats.win ? 'bg-[#1E2B5E] hover:bg-[#1C234B]' : 'bg-[#3E223B] hover:bg-[#311F3A]';
 
   const summonerSpells = {

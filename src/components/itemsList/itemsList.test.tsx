@@ -20,8 +20,49 @@ const player = {
   },
 } as unknown as IPlayerPosGameStats;
 
+const mockStorageAllItem = {
+  7050: {
+    name: 'Gangplank Placeholder',
+    description: '',
+    colloq: '',
+    plaintext: 'New Gangplank interface coming soon!',
+    stacks: 0,
+    consumed: true,
+    consumeOnFull: true,
+    inStore: false,
+    requiredChampion: 'Gangplank',
+    hideFromAll: true,
+    image: {
+      full: '7050.png',
+      sprite: 'item4.png',
+      group: 'item',
+      x: 96,
+      y: 144,
+      w: 48,
+      h: 48,
+    },
+    gold: {
+      base: 0,
+      purchasable: false,
+      total: 0,
+      sell: 0,
+    },
+    tags: [],
+    maps: {
+      '11': true,
+      '12': true,
+      '21': true,
+      '22': false,
+      '30': true,
+    },
+    stats: {},
+  },
+};
+
 describe('<ItemList />', () => {
   it('should be render an item list with your photos', () => {
+    localStorage.setItem('allItems', JSON.stringify(mockStorageAllItem));
+
     render(<ItemList player={player} />);
 
     const itemList = screen.getAllByRole('img', { name: 'Item' });
@@ -32,6 +73,8 @@ describe('<ItemList />', () => {
   });
 
   it('should be render an item list with your respective correctly photo', () => {
+    localStorage.setItem('allItems', JSON.stringify(mockStorageAllItem));
+
     render(<ItemList player={player} />);
 
     const itemList = screen.getAllByRole('img', { name: 'Item' });

@@ -7,6 +7,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import MatchBox from '.';
 import IPlayerPosGameStats from '../../interfaces/IPlayerPosGameStats';
+import IChampions from '../../interfaces/IChampions';
 
 const player = {
   championId: 266,
@@ -15,6 +16,13 @@ const player = {
     kills: 10,
     deaths: 3,
     assists: 12,
+    item0: 1001,
+    item1: 0,
+    item2: 0,
+    item3: 0,
+    item4: 0,
+    item5: 0,
+    item6: 0,
   },
 } as unknown as IPlayerPosGameStats;
 
@@ -25,6 +33,13 @@ const playerLose = {
     kills: 10,
     deaths: 3,
     assists: 12,
+    item0: 1001,
+    item1: 0,
+    item2: 0,
+    item3: 0,
+    item4: 0,
+    item5: 0,
+    item6: 0,
   },
 } as unknown as IPlayerPosGameStats;
 
@@ -44,8 +59,14 @@ const propsLose = {
   gameDate: '2021-01-01',
 };
 
+const mockStorage = { 1001: { name: 'boots' } };
+const mockAllChampions = [{ name: 'Aatrox', id: 'Aatrox', key: '266' }] as IChampions[];
+
 describe('<MatchBox />', () => {
   it('Render a matchbox win', () => {
+    localStorage.setItem('allItems', JSON.stringify(mockStorage));
+    localStorage.setItem('allChampions', JSON.stringify(mockAllChampions));
+
     render(<MatchBox {...props} />);
 
     const matchBox = screen.getByTestId('matchbox-container');
@@ -54,7 +75,11 @@ describe('<MatchBox />', () => {
     expect(matchBox.classList.contains('bg-[#1E2B5E]')).toBe(true);
     expect(matchBoxResult).toBeInTheDocument();
   });
+
   it('Render a matchbox loss', () => {
+    localStorage.setItem('allItems', JSON.stringify(mockStorage));
+    localStorage.setItem('allChampions', JSON.stringify(mockAllChampions));
+
     render(<MatchBox {...propsLose} />);
 
     const matchBox = screen.getByTestId('matchbox-container');
@@ -65,6 +90,9 @@ describe('<MatchBox />', () => {
   });
 
   it('Render player stats', () => {
+    localStorage.setItem('allItems', JSON.stringify(mockStorage));
+    localStorage.setItem('allChampions', JSON.stringify(mockAllChampions));
+
     render(<MatchBox {...props} />);
 
     const matchBoxKills = screen.getByRole('heading', { name: '10' });
@@ -78,6 +106,9 @@ describe('<MatchBox />', () => {
   });
 
   it('should be render a matchbox with correctly champion photo', async () => {
+    localStorage.setItem('allItems', JSON.stringify(mockStorage));
+    localStorage.setItem('allChampions', JSON.stringify(mockAllChampions));
+
     render(<MatchBox {...props} />);
 
     await waitFor(() => {
