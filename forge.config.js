@@ -5,6 +5,17 @@ module.exports = {
   rebuildConfig: {},
   makers: [
     {
+      name: 'electron-forge-maker-appimage',
+      config: {
+        bin: 'rune-maker',
+        homepage: './',
+        name: 'Rune Maker',
+        productName: 'Rune Maker',
+        maintainer: 'Igor Tiburcio Cavalcanti',
+        icon: './poro.ico',
+      },
+    },
+    {
       name: '@electron-forge/maker-squirrel',
       config: {
         authors: 'Igor Tiburcio Cavalcanti',
