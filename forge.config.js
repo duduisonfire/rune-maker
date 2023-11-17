@@ -17,6 +17,9 @@ module.exports = {
       config: {
         options: {
           bin: 'rune-maker',
+          homepage: './',
+          name: 'Rune Maker',
+          productName: 'Rune Maker',
           maintainer: 'Igor Tiburcio Cavalcanti',
           icon: './poro.ico',
         },
