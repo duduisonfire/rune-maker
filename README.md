@@ -10,11 +10,11 @@ welcome to use my app.
 
 # Photos
 <p align="center">
-  <img src="https://imageupload.io/ib/5X5ryppsrl9dqhy_1698138530.png" alt="Select LoL Folder" width=400>
-  <img src="https://imageupload.io/ib/CEYz9Jx04IkwUNJ_1698138530.png" alt="Client Closed" width=400>
-  <img src="https://i.ibb.co/0VSpgNv/Screenshot-from-2023-11-05-16-36-07.png" alt="Open Client" width=400>
-  <img src="https://imageupload.io/ib/btEGtxINxZZMdXH_1698138529.png" alt="Select Champion" width=400>
-  <img src="https://user-images.githubusercontent.com/37435869/279866860-076fd1ba-1b23-46d1-b5da-770d2668309e.png" alt="View champion and runes" width=400>
+  <img src="https://i.postimg.cc/VvncKGRs/Screenshot-from-2023-10-24-04-56-08.png" alt="Select LoL Folder" width=400>
+  <img src="https://i.postimg.cc/tCGbsbqs/Screenshot-from-2023-10-24-04-56-02.png" alt="Client Closed" width=400>
+  <img src="https://i.postimg.cc/Jny8k4Hk/4ad43d95-6784-4041-a2eb-a7fffbd3a32a.jpg" alt="Open Client" width=400>
+  <img src="https://i.postimg.cc/nVDZVrJ8/Screenshot-from-2023-10-24-04-55-22.png" alt="Select Champion" width=400>
+  <img src="https://i.postimg.cc/ZKPS3QnV/279866860-076fd1ba-1b23-46d1-b5da-770d2668309e.png" alt="View champion and runes" width=400>
 </p>
 
 # Features
