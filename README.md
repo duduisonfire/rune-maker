@@ -3,10 +3,9 @@
 </p>
 
 # Rune Maker
-Hello, welcome to Rune Maker github page. Rune Maker is an League of Legends assistant
-to select your runes (and in the future, your builds) automatically. I developed this app
-to personal use, why in linux this app like are inexistent. So, if you use linux you are
-welcome to use my app.
+Hello, welcome to Rune Maker github page. Rune Maker is a League of Legends assistant
+to select your runes (and in the future, your builds) automatically. I developed this app for personal use because in Linux this is inexistent. 
+So, if you use Linux this app is made for you.
 
 # Photos
 <p align="center">
@@ -27,4 +26,4 @@ welcome to use my app.
 # How to use
 1. Run Rune Maker
 2. Choose the LeagueClient.exe on the League of Legends Folder.
-3. The rest the program does for you.
+3. The rest of the program does for you.
