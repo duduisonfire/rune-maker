@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import IChampionSelectRequest from '../../interfaces/IChampionSelectRequest';
 import LeagueOfLegendsClientApi from '../../libs/LeagueOfLegendsClientApi';
@@ -11,6 +11,7 @@ import Runes from '../../components/runes';
 import IChampions from '../../interfaces/IChampions';
 
 export default function InMatch(): JSX.Element {
+  const queryClient = useQueryClient();
   const lockfile = JSON.parse(localStorage.getItem('lockfileData') as string) as ILockfileData;
   const allChampions = JSON.parse(localStorage.getItem('allChampions') as string) as IChampions[];
   const navigate = useNavigate();
@@ -20,48 +21,46 @@ export default function InMatch(): JSX.Element {
   const lolClientApi = useMemo(() => LeagueOfLegendsClientApi.create(lockfile), [lockfile]);
   const runePageApi = useMemo(() => new GetRunesApi(), []);
 
-  const QueryMultiple = () => {
-    const res1 = useQuery({
-      queryKey: ['inMatch'],
-      queryFn: async () => {
-        const res = await lolClientApi.inChampionSelect();
+  useQuery({
+    queryKey: ['inMatch'],
+    queryFn: async () => {
+      const res = await lolClientApi.inChampionSelect();
 
-        const championSelectStage = res?.data as IChampionSelectRequest;
-        const championId = lolClientApi.getChampionId(championSelectStage).toString();
-        const championName = allChampions.find((champion) => champion.key === championId)?.id ?? '';
+      const championSelectStage = res?.data as IChampionSelectRequest;
+      const championId = lolClientApi.getChampionId(championSelectStage).toString();
+      const championName = allChampions.find((champion) => champion.key === championId)?.id ?? '';
 
-        if (championName !== champion) {
-          setLane(lolClientApi.getLane(championSelectStage));
-          setChampion(championName);
-          const runes = await runePageApi.getChampionRunes(championName, lane);
-          const runePage = new RunePageToCreate(runes, 0);
-          setRunes(runePage);
+      if (championName !== champion) {
+        setLane(lolClientApi.getLane(championSelectStage));
+        setChampion(championName);
+        const runes = await runePageApi.getChampionRunes(championName, lane);
+        const runePage = new RunePageToCreate(runes, 0);
+        setRunes(runePage);
 
-          let successInGetRunePage = false;
+        let successInGetRunePage = false;
 
-          while (!successInGetRunePage) {
-            const currentRunePage = await lolClientApi.getCurrentRunePage();
+        while (!successInGetRunePage) {
+          const currentRunePage = await lolClientApi.getCurrentRunePage();
 
-            if (currentRunePage instanceof Error) {
-              continue;
-            } else {
-              successInGetRunePage = true;
-            }
-
-            await lolClientApi.deleteCurrentRunePage(currentRunePage.id);
-            await lolClientApi.createCurrentRunePage(runePage);
+          if (currentRunePage instanceof Error) {
+            continue;
+          } else {
+            successInGetRunePage = true;
           }
+
+          await lolClientApi.deleteCurrentRunePage(currentRunePage.id);
+          await lolClientApi.createCurrentRunePage(runePage);
         }
+      }
 
-        return res;
-      },
-      refetchInterval: 500,
-    });
-
-    if (res1.status === 'error') navigate('/closed');
-  };
-
-  QueryMultiple();
+      return res;
+    },
+    refetchInterval: 500,
+    onError: () => {
+      queryClient.invalidateQueries(['clientIsOpen', 'lockfile']);
+      navigate('/closed');
+    },
+  });
 
   return (
     <div className="col-start-2 col-end-13 grid grid-cols-12">

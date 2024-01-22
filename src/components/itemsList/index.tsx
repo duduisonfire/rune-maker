@@ -17,14 +17,17 @@ export default function ItemList({ player }: Props): JSX.Element {
   for (let index = 0; index < 7; index++) {
     const itemIndex = `item${index}`;
     const itemId = playerStats[itemIndex];
+
     if (itemId === 0) {
       item.push(blankItem);
       tooltipItem.push('');
     } else {
       item.push(`${playerStats[`item${index}`]}`);
-      tooltipItem.push(
-        `<itemName>${allItems[Number(itemId)].name}</itemName> <br />${allItems[Number(itemId)].description}`,
-      );
+      if (allItems[Number(itemId)]) {
+        tooltipItem.push(
+          `<itemName>${allItems[Number(itemId)].name}</itemName> <br />${allItems[Number(itemId)].description}`,
+        );
+      }
     }
   }
 

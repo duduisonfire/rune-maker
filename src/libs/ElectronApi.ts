@@ -16,13 +16,11 @@ export default class ElectronApi implements IElectronApi {
 
   async getLockfileContent() {
     window.api.watch();
-    const lockfileData = (await window.api.requestData()) as ILockfileData;
-    return lockfileData;
+    return (await window.api.requestData()) as ILockfileData;
   }
 
   async clientIsOpen() {
-    const isOpen = (await window.api.isOpen()) as boolean;
-    return isOpen;
+    return (await window.api.isOpen()) as boolean;
   }
 
   watch() {
