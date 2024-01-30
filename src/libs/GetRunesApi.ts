@@ -3,7 +3,7 @@ import IRunePage from '../interfaces/IRunePage';
 
 export default class GetRunesApi {
   axiosInstance = axios.create({
-    baseURL: 'http://51.161.70.66:5000/api/ugg/',
+    baseURL: 'https://runemaker.igorcoder.tech/api/ugg/',
   });
 
   async getChampionRunes(champion: string, lane: string) {
