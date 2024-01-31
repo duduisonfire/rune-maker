@@ -19,8 +19,7 @@ module.exports = {
       name: '@electron-forge/maker-squirrel',
       config: {
         authors: 'Igor Tiburcio Cavalcanti',
-        exe: `Rune Maker.exe`,
-        name: 'Rune Maker',
+        name: 'RuneMaker',
       },
     },
     {
