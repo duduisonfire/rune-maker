@@ -1,5 +1,5 @@
 {
-  "name": "rune-maker",
+  "name": "runemaker",
   "version": "1.1.7",
   "description": "A league of Legends assistant.",
   "main": "./dist/main.js",
