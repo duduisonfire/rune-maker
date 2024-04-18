@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/duduisonfire/rune-maker/master/repo-logo.png" alt="Logo" height=200>
 </p>
 
-#Disclaimer
+# Disclaimer
 Due to the fact that riot forces vanguard and LoL will probably stop working on Linux, this project has lost its meaning for me, I leave here my protests against riot. This implies that the server that provided the runes has been deactivated and the project will no longer work, thank you to everyone who used the program.
 
 # Rune Maker
