@@ -29,4 +29,4 @@ So, if you use Linux this app is made for you.
 # How to use
 1. Run Rune Maker
 2. Choose the LeagueClient.exe on the League of Legends Folder.
-3. The rest of the program does for you.
+3. The rest, the program does for you.
