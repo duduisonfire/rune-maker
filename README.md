@@ -3,7 +3,7 @@
 </p>
 
 # Disclaimer
-Due to the fact that riot forces vanguard and LoL will probably stop working on Linux, this project has lost its meaning for me, I leave here my protests against riot. This implies that the server that provided the runes has been deactivated and the project will no longer work, thank you to everyone who used the program.
+Since Riot forced Vanguard into LoL the game stopped working on Linux and this project lost its meaning for me. I am protesting against Riot. This implies that the server that hosted this API has been shut down. You can still use the code and host it if you want.
 
 # Rune Maker
 Hello, welcome to Rune Maker github page. Rune Maker is a League of Legends assistant
